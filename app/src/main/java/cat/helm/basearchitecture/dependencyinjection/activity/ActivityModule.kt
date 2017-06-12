@@ -3,8 +3,6 @@ package cat.helm.basearchitecture.dependencyinjection.activity
 import android.content.Context
 import cat.helm.basearchitecture.data.dependencyinjection.qualifier.ActivityContext
 import cat.helm.basearchitecture.dependencyinjection.scope.PerActivity
-import cat.helm.ureentool.ui.base.ExceptionHandler
-import cat.helm.ureentool.ui.base.SimpleExceptionHandler
 import dagger.Module
 import dagger.Provides
 
@@ -20,7 +18,4 @@ class ActivityModule(val activity: Context) {
     @ActivityContext
     fun providesActivityContext() = activity
 
-    @Provides
-    @PerActivity
-    fun providesExceptionHandler(exceptionHandler: SimpleExceptionHandler): ExceptionHandler = exceptionHandler
 }
