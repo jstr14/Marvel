@@ -32,7 +32,7 @@ sealed class Result<out Value, out Exception : kotlin.Exception> {
 
     fun <Value, NewValue, Exception : kotlin.Exception> Result<Value, Exception>.flatMap(mapFunction: (Value) -> Result<NewValue, Exception>): Result<NewValue, Exception> {
 
-       return fold({ mapFunction(it) }, { Result.Failure(it) })
+        return fold({ mapFunction(it) }, { Result.Failure(it) })
     }
 
     companion object {
@@ -42,8 +42,7 @@ sealed class Result<out Value, out Exception : kotlin.Exception> {
         infix inline fun <Value> of(executableFunction: () -> Value?): Result<Value, kotlin.Exception> {
             try {
                 val result = executableFunction()
-                result?.let {
-                    value ->
+                result?.let { value ->
                     return Success(value)
                 }
                 return Result.Failure()
