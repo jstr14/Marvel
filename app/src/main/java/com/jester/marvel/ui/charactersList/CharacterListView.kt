@@ -8,4 +8,5 @@ import com.jester.marvel.ui.base.BaseView
  */
 interface CharacterListView: BaseView {
     fun showCharacters(charactersList: List<Character>)
+    fun hideLoader()
 }

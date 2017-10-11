@@ -18,15 +18,16 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
     }
 
 
-    private fun getCharactersListWithPagination(offset: Int){
+    private fun getCharactersListWithPagination(offset: Int) {
 
-        getCharacterListInteractor.execute(GetCharacterListInteractor.Parameters(offset)){
-            result ->
-            result.success {
-                value -> view.showCharacters(value)
+        getCharacterListInteractor.execute(GetCharacterListInteractor.Parameters(offset)) { result ->
+            result.success { value ->
+                view.hideLoader()
+                view.showCharacters(value)
+
             }
-            result.failure {
-                exception -> exceptionHandler.notifyException(view, exception)
+            result.failure { exception ->
+                exceptionHandler.notifyException(view, exception)
             }
         }
     }
