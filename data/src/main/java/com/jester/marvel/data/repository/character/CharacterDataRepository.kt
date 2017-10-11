@@ -5,7 +5,7 @@ import com.jester.marvel.data.repository.Repository
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.mapToCharacter
 import com.jester.marvel.data.repository.character.query.GetCharacterListQuery
-import com.jester.marvel.model.Character
+import com.jester.marvel.model.character.Character
 import com.jester.marvel.repository.CharacterRepository
 import javax.inject.Inject
 

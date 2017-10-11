@@ -1,7 +1,9 @@
 package com.jester.marvel.ui.charactersList
 
 import com.jester.marvel.character.GetCharacterListInteractor
+import com.jester.marvel.model.character.Character
 import com.jester.marvel.ui.exception.AndroidExceptionHandler
+import com.jester.marvel.ui.model.mapper.mapToCharacterViewEntity
 import javax.inject.Inject
 
 /**
@@ -23,12 +25,17 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
         getCharacterListInteractor.execute(GetCharacterListInteractor.Parameters(offset)) { result ->
             result.success { value ->
                 view.hideLoader()
-                view.showCharacters(value)
+                view.showCharacters(value.map(Character::mapToCharacterViewEntity))
 
             }
             result.failure { exception ->
                 exceptionHandler.notifyException(view, exception)
             }
         }
+    }
+
+    fun showMoreCharacter(offset: Int) {
+
+        getCharactersListWithPagination(offset)
     }
 }
