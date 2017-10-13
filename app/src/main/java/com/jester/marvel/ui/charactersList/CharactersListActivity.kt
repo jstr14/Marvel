@@ -1,5 +1,6 @@
 package com.jester.marvel.ui.charactersList
 
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -24,7 +25,10 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         var progressVisible = false
         var retrievingCharacters = false
         var hasMore = true
-        var FOOTER = "Footer"
+        val FOOTER = "Footer"
+        val COLUMN_NUMBER = 2
+        var SPAN_FULL = COLUMN_NUMBER
+        var SPAN_SIZE_BASE = 1
     }
 
     @Inject lateinit var presenter: CharacterListPresenter
@@ -37,10 +41,10 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun onViewLoaded() {
 
+
         progressLoader.addImagesToProgressLoader(loading.loading_view, this)
         setRecyclerView()
         presenter.onStart()
-
 
     }
 
@@ -53,19 +57,20 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun showCharacters(charactersList: List<CharacterViewEntity>) {
 
-        if(adapter.collection.isNotEmpty()){
-            adapter.remove(adapter.getItem(adapter.collection.size-1))
-            progressVisible = false
-            retrievingCharacters = false
-        }
-
+        removeProgressBarFromRecyclerView()
         adapter.addAll(charactersList)
         adapter.notifyDataSetChanged()
     }
 
     private fun setRecyclerView() {
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val gridLayoutManager = GridLayoutManager(this, COLUMN_NUMBER)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (adapter.getItem(position) is String) SPAN_FULL else SPAN_SIZE_BASE
+            }
+        }
+        recyclerView.layoutManager = gridLayoutManager
 
         adapter = RendererBuilder.create<Any>()
                 .bind(CharacterViewEntity::class.java, CharacterRenderer())
@@ -80,17 +85,11 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                dx.toInt()
                 if (!progressVisible && hasMore) {
                     val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
-                    //position starts at 0
                     if (layoutManager.findLastCompletelyVisibleItemPosition() >= layoutManager.itemCount - 2 && !retrievingCharacters) {
-                        adapter.add(FOOTER)
-                        adapter.notifyDataSetChanged()
-                        progressVisible = true
 
-
-                        //TODO call presenter with offset
+                        showProgressBaronRecyclerView()
                         retrievingCharacters = true
                         presenter.showMoreCharacter(adapter.collection.size)
 
@@ -99,4 +98,22 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
             }
         })
     }
+
+    private fun showProgressBaronRecyclerView() {
+
+        adapter.add(FOOTER)
+        adapter.notifyDataSetChanged()
+        recyclerView.scrollToPosition(adapter.itemCount - 1)
+        progressVisible = true
+    }
+
+    private fun removeProgressBarFromRecyclerView() {
+
+        if (adapter.collection.isNotEmpty()) {
+            adapter.remove(adapter.getItem(adapter.collection.size - 1))
+            progressVisible = false
+            retrievingCharacters = false
+        }
+    }
+
 }
