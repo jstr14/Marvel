@@ -14,6 +14,7 @@ import com.pedrogomez.renderers.RendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import kotlinx.android.synthetic.main.activity_characters_list.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 
@@ -33,6 +34,8 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     @Inject lateinit var presenter: CharacterListPresenter
     @Inject lateinit var progressLoader: ProgressLoader
+    @Inject lateinit var characterRenderer: CharacterRenderer
+    @Inject lateinit var footerRenderer: FooterRenderer
     lateinit var adapter: RendererAdapter<Any>
 
     override fun onRequestLayout(): Int {
@@ -73,8 +76,8 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         recyclerView.layoutManager = gridLayoutManager
 
         adapter = RendererBuilder.create<Any>()
-                .bind(CharacterViewEntity::class.java, CharacterRenderer())
-                .bind(String::class.java, FooterRenderer())
+                .bind(CharacterViewEntity::class.java, characterRenderer)
+                .bind(String::class.java, footerRenderer)
                 .build()
                 .into(recyclerView)
 
@@ -116,4 +119,9 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         }
     }
 
+    override fun onCharacterPress(id: String) {
+
+        //TODO : navigate to detail activity to show character info
+        longToast(id)
+    }
 }

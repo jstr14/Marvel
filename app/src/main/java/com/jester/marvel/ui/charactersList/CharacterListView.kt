@@ -9,4 +9,5 @@ import com.jester.marvel.ui.model.CharacterViewEntity
 interface CharacterListView: BaseView {
     fun showCharacters(charactersList: List<CharacterViewEntity>)
     fun hideLoader()
+    fun onCharacterPress(id: String)
 }

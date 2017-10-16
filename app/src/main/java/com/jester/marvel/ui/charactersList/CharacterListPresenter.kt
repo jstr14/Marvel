@@ -38,4 +38,8 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
         getCharactersListWithPagination(offset)
     }
+
+    fun onCharacterPress(id: String) {
+        view.onCharacterPress(id)
+    }
 }
