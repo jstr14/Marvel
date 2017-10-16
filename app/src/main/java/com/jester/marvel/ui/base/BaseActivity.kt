@@ -1,11 +1,9 @@
 package com.jester.marvel.ui.base
 
-import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.widget.TextView
 import dagger.android.AndroidInjection
+import org.jetbrains.anko.design.longSnackbar
 
 /**
  * Created by Borja on 21/12/16.
@@ -26,11 +24,8 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
     abstract fun onViewLoaded()
 
     override fun showException(exceptionMessage: String) {
-        val snack = Snackbar.make(findViewById(android.R.id.content), exceptionMessage, Snackbar.LENGTH_LONG)
-        val view = snack.view
-        val tv = view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-        tv.setTextColor(Color.WHITE)
-        snack.show()
+
+        longSnackbar(findViewById(android.R.id.content),exceptionMessage)
     }
 
 }

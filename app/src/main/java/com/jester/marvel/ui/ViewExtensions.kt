@@ -1,12 +1,17 @@
 package com.jester.marvel.ui
 
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import com.jester.marvel.R
+import com.jester.marvel.dependencyinjection.application.GlideApp
 
 /**
- * Created by Borja on 6/6/17.
+ * Created by Héctor on 13/10/2017.
  */
+fun ImageView.load(url: String) {
 
-fun ImageView.bind(url: String) {
-    Picasso.with(this.context).load(url).into(this)
+    GlideApp.with(this)
+            .load(url)
+            .error(R.color.grey)
+            .placeholder(R.color.grey)
+            .into(this)
 }
