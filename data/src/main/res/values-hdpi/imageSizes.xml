@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="portrait">portrait_xlarge</string>
+    <string name="square">standard_large</string>
+    <string name="landscape">landscape_large</string>
+</resources>

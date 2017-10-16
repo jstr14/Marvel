@@ -1,3 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">BaseArchitecture</string>
+
+    <string name="app_name">Marvel Super Heroes</string>
+    <string name="server_error">Server Error</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="unauthorized">Unauthorized</string>
 </resources>

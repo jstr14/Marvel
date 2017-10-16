@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="cat.helm.basearchitecture">
+          package="com.jester.marvel">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
             android:name=".BaseApplication"
             android:allowBackup="true"
             android:fullBackupContent="false"
-            android:icon="@mipmap/ic_launcher_transparent"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.MainActivity">
+
+        <activity android:name=".ui.main.MainActivity"/>
+
+
+
+        <activity android:name=".ui.charactersList.CharactersListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
