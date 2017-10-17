@@ -7,4 +7,7 @@ import com.jester.marvel.data.repository.character.model.ImageViewEntity
  */
 data class CharacterViewEntity(val id: String,
                                val name: String,
-                               val image: ImageViewEntity)
+                               val image: ImageViewEntity,
+                               var comics: List<ComicViewEntity> = arrayListOf(),
+                               var events: List<EventViewEntity> = arrayListOf(),
+                               var stories: List<StoryViewEntity> = arrayListOf())

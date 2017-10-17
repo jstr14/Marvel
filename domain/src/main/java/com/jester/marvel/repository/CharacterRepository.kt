@@ -9,4 +9,5 @@ import com.jester.marvel.model.character.Character
 interface CharacterRepository {
 
     fun getCharacters(offset: Int): Result<List<Character>, Exception>
+    fun getCharacterInfo(id: String): Result<Character, Exception>
 }

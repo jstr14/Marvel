@@ -10,12 +10,22 @@ import com.jester.marvel.ui.model.CharacterViewEntity
  */
 fun Character.mapToCharacterViewEntity() : CharacterViewEntity {
 
-    return CharacterViewEntity(this.id,this.name,this.image.mapToImageViewEntitiy())
+    return CharacterViewEntity(this.id,
+            this.name,
+            this.image.mapToImageViewEntitiy(),
+            this.comics.map { it.mapToComicViewEntity() },
+            this.events.map { it.mapToEventViewEntity() },
+            this.stories.map { it.mapToEventViewEntity() })
 }
 
 fun CharacterViewEntity.mapToCharacter(): Character{
 
-    return Character(this.id,this.name,this.image.mapToImage())
+    return Character(this.id,
+            this.name,
+            this.image.mapToImage(),
+            this.comics.map { it.mapToComic() },
+            this.events.map { it.mapToEvent() },
+            this.stories.map { it.mapToStory() })
 }
 
 fun Image.mapToImageViewEntitiy() : ImageViewEntity {

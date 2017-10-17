@@ -71,9 +71,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
 
-
-
-
 }
 
 repositories {

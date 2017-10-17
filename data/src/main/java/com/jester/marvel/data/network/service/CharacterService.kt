@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import com.jester.marvel.data.network.ApiConstants
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -14,4 +15,7 @@ interface CharacterService {
     @GET(ApiConstants.GET_CHARACTERS_LIST)
     fun getCharactersList(@Query("orderBy") orderBy: String,
                           @Query("offset") offset: Int): Call<JsonElement>
+
+    @GET(ApiConstants.GET_CHARACTER_INFO)
+    fun getCharacterInfo(@Path("id")id: String): Call<JsonElement>
 }

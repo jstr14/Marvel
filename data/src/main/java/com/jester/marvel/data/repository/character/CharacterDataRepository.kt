@@ -23,5 +23,12 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
         val params = HashMap<String, Any>()
         params.put(GetCharacterListQuery.OFFSET, offset)
         val result = queryAll(GetCharacterListQuery::class.java, params)
-        return result.map { it.map { it.mapToCharacter() } }    }
+        return result.map { it.map { it.mapToCharacter() } }
+    }
+
+    override fun getCharacterInfo(id: String): Result<Character, Exception> {
+
+        val result = getByKey(id)
+        return result.map { it.mapToCharacter() }
+    }
 }
