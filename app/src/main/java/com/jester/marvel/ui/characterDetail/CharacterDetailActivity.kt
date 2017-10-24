@@ -2,14 +2,19 @@ package com.jester.marvel.ui.characterDetail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.PorterDuff
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.jester.marvel.R
 import com.jester.marvel.ui.HorizontalSpaceItemDecorator
 import com.jester.marvel.ui.ProgressLoader
 import com.jester.marvel.ui.base.BaseActivity
 import com.jester.marvel.ui.characterDetail.renderers.ComicRenderer
-import com.jester.marvel.ui.load
 import com.jester.marvel.ui.model.CharacterViewEntity
 import com.jester.marvel.ui.model.ComicViewEntity
 import com.jester.marvel.ui.setPrefixTextBold
@@ -19,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.character_info.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
 import javax.inject.Inject
-
 
 class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
@@ -58,7 +62,7 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
     override fun showCharacterInfo(characterViewEntity: CharacterViewEntity) {
 
         val properPath = characterViewEntity.image.path + "/" + this.getString(R.string.square) + "." + characterViewEntity.image.extension
-        characterImage.load(properPath)
+        loadImageAndChangeIconColor(properPath)
 
         characterName.setPrefixTextBold(getString(R.string.name_detail),characterViewEntity.name,getString(R.string.character_info_option_separator))
         description.setPrefixTextBold(getString(R.string.description_detail),characterViewEntity.description, getString(R.string.character_info_option_separator))
@@ -73,6 +77,32 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
 
 
+    }
+
+    fun loadImageAndChangeIconColor(url: String){
+
+        Glide.with(this)
+                .asBitmap()
+                .load(url)
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
+                        characterImage.setImageBitmap(resource)
+                        getPaletteFromBitmap(resource)
+                    }
+                })
+    }
+
+    fun getPaletteFromBitmap(bitmap: Bitmap){
+
+        val palette = Palette.from(bitmap).generate()
+
+        val swatch = palette.darkMutedSwatch
+        if (swatch != null) {
+            val navigationIcon = toolbar.navigationIcon
+            navigationIcon?.setColorFilter(swatch.rgb, PorterDuff.Mode.SRC_ATOP)
+
+
+        }
     }
 
     override fun hideLoader() {
@@ -90,9 +120,7 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
-            //setHomeAsUpIndicator(R.drawable.)
             setDisplayShowTitleEnabled(false)
-            //setBackgroundDrawable(resources.getDrawable(R.drawable.back_icon_menu))
 
         }
     }
