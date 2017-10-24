@@ -1,6 +1,7 @@
 package com.jester.marvel.data.repository.datasource
 
 import com.jester.marvel.Result
+import com.jester.marvel.data.repository.implements
 import com.jester.marvel.data.repository.query.Query
 import java.util.*
 
@@ -33,14 +34,24 @@ open class InMemoryCacheDataSource<Key, Value : Identifiable<Key>>(val timeProvi
     override fun addOrUpdateAll(values: Collection<Value>): Result<Collection<Value>, Exception> {
         return Result.of {
             synchronized(this) {
-                values.forEach {
-                    value ->
+                values.forEach { value ->
                     addOrUpdate(value)
                 }
 
                 values
             }
         }
+    }
+
+    override fun queryAll(query: Class<*>, parameters: HashMap<String, *>?): Result<Collection<Value>, Exception> {
+        queries.forEach { possibleQuery ->
+            if (possibleQuery.implements(query)) {
+                val result = possibleQuery.queryAll(parameters, items) as Result<Collection<Value>,Exception>
+                lastItemsUpdate = timeProvider.currentTimeMillis()
+                return result
+            }
+        }
+        return Result.Failure()
     }
 
     override fun deleteByKey(key: Key): Result<Unit, Exception> {

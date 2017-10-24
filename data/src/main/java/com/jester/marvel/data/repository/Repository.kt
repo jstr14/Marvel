@@ -127,13 +127,17 @@ open class Repository<Key, Value> {
 
     fun query(query: Class<*>, parameters: HashMap<String, *>? = null, policy: ReadPolicy = ReadPolicy.READ_ALL): Result<Value, *> {
         var result: Result<Value, *> = Result.Failure()
-
         if (policy.useCache()) {
-
             for (cacheDataSource in cacheDataSources) {
                 result = cacheDataSource.query(query, parameters)
-                if (result.isSuccess()) {
-                    break
+                result.success {
+                    value ->
+                    if (isValidValue(value,cacheDataSource)) {
+                        return result
+                    } else {
+                        cacheDataSource.deleteAll()
+                        result = Result.Failure()
+                    }
                 }
             }
         }
@@ -145,6 +149,7 @@ open class Repository<Key, Value> {
                     if (result.isSuccess()) {
                         break
                     }
+
                 }
             }
         }
@@ -162,8 +167,14 @@ open class Repository<Key, Value> {
         if (policy.useCache()) {
             for (cacheDataSource in cacheDataSources) {
                 result = cacheDataSource.queryAll(query, parameters)
-                if (result.isSuccess()) {
-                    break
+                result.success {
+                    value ->
+                    if (areValidValues(value,cacheDataSource)) {
+                        return result
+                    } else {
+                        cacheDataSource.deleteAll()
+                        result = Result.Failure()
+                    }
                 }
             }
         }
@@ -272,9 +283,15 @@ open class Repository<Key, Value> {
         var areValidValues = false
         values?.forEach {
             value ->
-            areValidValues = areValidValues or cacheDataSource.isValid(value)
+            areValidValues = areValidValues or isValidValue(value,cacheDataSource)
         }
         return areValidValues
+    }
+
+    private fun isValidValue(value: Value, cacheDataSource: CacheDataSource<Key, Value>): Boolean {
+
+         return cacheDataSource.isValid(value)
+
     }
 
 }

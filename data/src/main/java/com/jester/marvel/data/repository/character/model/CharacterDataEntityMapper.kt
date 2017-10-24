@@ -10,7 +10,8 @@ fun CharacterDataEntity.mapToCharacter(): Character {
 
     return Character(this.id,
             this.name,
-            this.image.mapToImage())
+            this.description,
+            this.image!!.mapToImage())
 }
 
 fun ImageDataEntity.mapToImage(): Image {

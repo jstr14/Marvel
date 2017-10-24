@@ -1,6 +1,6 @@
 package com.jester.marvel.data.repository.story
 
-import com.jester.marvel.data.dependencyinjection.qualifier.StoryApiQuery
+import com.jester.marvel.data.dependencyinjection.qualifier.queries.StoryApiQuery
 import com.jester.marvel.data.repository.datasource.ReadableDataSource
 import com.jester.marvel.data.repository.query.Query
 import com.jester.marvel.data.repository.story.model.StoryDataEntity

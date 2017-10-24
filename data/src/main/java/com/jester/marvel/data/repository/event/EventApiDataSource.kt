@@ -1,6 +1,6 @@
 package com.jester.marvel.data.repository.event
 
-import com.jester.marvel.data.dependencyinjection.qualifier.EventApiQuery
+import com.jester.marvel.data.dependencyinjection.qualifier.queries.EventApiQuery
 import com.jester.marvel.data.repository.datasource.ReadableDataSource
 import com.jester.marvel.data.repository.event.model.EventDataEntity
 import com.jester.marvel.data.repository.query.Query

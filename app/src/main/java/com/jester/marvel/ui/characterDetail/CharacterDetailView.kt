@@ -9,4 +9,5 @@ import com.jester.marvel.ui.model.CharacterViewEntity
 interface CharacterDetailView: BaseView {
 
     fun showCharacterInfo(value: CharacterViewEntity)
+    fun hideLoader()
 }

@@ -41,10 +41,6 @@ class GetCharacterInfoInteractor @Inject constructor(postExecutionThread: PostEx
             params.character
         }
 
-//        val result = this.getCharacterComics(params.character.id)
-//        val result2 = this.getCharacterEvents(params.character.id)
-//        val result3 = this.getCharacterStories(params.character.id)
-
         return result
 
     }

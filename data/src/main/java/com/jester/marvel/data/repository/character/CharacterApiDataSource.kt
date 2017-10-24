@@ -1,7 +1,7 @@
 package com.jester.marvel.data.repository.character
 
 import com.jester.marvel.Result
-import com.jester.marvel.data.dependencyinjection.qualifier.CharactersApiQuery
+import com.jester.marvel.data.dependencyinjection.qualifier.queries.CharactersApiQuery
 import com.jester.marvel.data.network.ConnectionChecker
 import com.jester.marvel.data.network.parseResponse
 import com.jester.marvel.data.network.service.CharacterService

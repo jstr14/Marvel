@@ -1,4 +1,4 @@
-package com.jester.marvel.data.dependencyinjection.qualifier
+package com.jester.marvel.data.dependencyinjection.qualifier.queries
 
 import javax.inject.Qualifier
 

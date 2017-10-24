@@ -46,13 +46,11 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun onViewLoaded() {
 
-
         progressLoader.addImagesToProgressLoader(loading.loading_view, this)
         setRecyclerView()
         presenter.onStart()
 
     }
-
 
     override fun hideLoader() {
         loading.visibility = View.GONE

@@ -1,17 +1,23 @@
 package com.jester.marvel.data.dependencyinjection
 
-import com.jester.marvel.data.dependencyinjection.qualifier.*
+import com.jester.marvel.data.dependencyinjection.qualifier.DiskCacheTtl
+import com.jester.marvel.data.dependencyinjection.qualifier.queries.*
 import com.jester.marvel.data.network.ApiConstants
 import com.jester.marvel.data.network.AuthenticationInterceptor
 import com.jester.marvel.data.repository.character.CharacterApiDataSource
+import com.jester.marvel.data.repository.character.CharacterCacheDataStore
 import com.jester.marvel.data.repository.character.CharacterDataRepository
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryApi
+import com.jester.marvel.data.repository.character.query.GetCharacterListQueryCache
 import com.jester.marvel.data.repository.comic.ComicApiDataSource
 import com.jester.marvel.data.repository.comic.ComicDataRepository
 import com.jester.marvel.data.repository.comic.model.ComicDataEntity
 import com.jester.marvel.data.repository.comic.query.GetComicsListQueryApi
+import com.jester.marvel.data.repository.datasource.InMemoryCacheDataSource
 import com.jester.marvel.data.repository.datasource.ReadableDataSource
+import com.jester.marvel.data.repository.datasource.SystemTimeProvider
+import com.jester.marvel.data.repository.datasource.TimeProvider
 import com.jester.marvel.data.repository.event.EventApiDataSource
 import com.jester.marvel.data.repository.event.EventDataRepository
 import com.jester.marvel.data.repository.event.model.EventDataEntity
@@ -39,6 +45,25 @@ import javax.inject.Singleton
  */
 @Module
 class DataModule {
+
+    @Provides
+    @Singleton
+    fun providesTTLCache(): Long {
+        return 60000
+    }
+
+    @Provides
+    @Singleton
+    @DiskCacheTtl
+    fun providesTTLDisk(): Long {
+        return 60000 * 5
+    }
+
+    @Provides
+    @Singleton
+    fun ProvidesTimeProvider(): TimeProvider {
+        return SystemTimeProvider()
+    }
 
     @Provides
     @ElementsIntoSet
@@ -82,12 +107,29 @@ class DataModule {
 
     @Provides
     @Singleton
+    fun providesCacheCharacterRedableDataSource(characterCacheDataStore: CharacterCacheDataStore): InMemoryCacheDataSource<String,CharacterDataEntity> {
+        return characterCacheDataStore
+    }
+
+    @Provides
+    @Singleton
     @ElementsIntoSet
     @CharactersApiQuery
     fun providesGetCharactersListQuery(getCharacterListQueryApi: GetCharacterListQueryApi): MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
         set.add(getCharacterListQueryApi)
+        return set
+    }
+
+    @Provides
+    @Singleton
+    @ElementsIntoSet
+    @CharactersCacheQuery
+    fun providesGetCharactersListCacheQuery(getCharacterListQueryCache: GetCharacterListQueryCache): MutableSet<Query> {
+
+        val set = LinkedHashSet<Query>()
+        set.add(getCharacterListQueryCache)
         return set
     }
 

@@ -10,6 +10,7 @@ import com.jester.marvel.model.story.Story
  */
 data class Character(val id: String,
                      val name: String,
+                     val description: String,
                      val image: Image,
                      var comics: List<Comic> = arrayListOf(),
                      var events: List<Event> = arrayListOf(),

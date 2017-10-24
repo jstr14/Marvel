@@ -12,10 +12,11 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 10/10/2017.
  */
-class CharacterDataRepository @Inject constructor(characterApiDataSource: CharacterApiDataSource)
+class CharacterDataRepository @Inject constructor(characterApiDataSource: CharacterApiDataSource, characterCacheDataStore: CharacterCacheDataStore)
     : CharacterRepository, Repository<String, CharacterDataEntity>() {
     init {
         readableDataSources.add(characterApiDataSource)
+        cacheDataSources.add(characterCacheDataStore)
     }
 
     override fun getCharacters(offset: Int): Result<List<Character>, Exception> {
@@ -26,9 +27,10 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
         return result.map { it.map { it.mapToCharacter() } }
     }
 
-    override fun getCharacterInfo(id: String): Result<Character, Exception> {
+    override fun getCharacterById(id: String): Result<Character, Exception> {
 
         val result = getByKey(id)
         return result.map { it.mapToCharacter() }
     }
+
 }
