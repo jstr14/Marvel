@@ -99,7 +99,7 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         val swatch = palette.darkMutedSwatch
         if (swatch != null) {
             val navigationIcon = toolbar.navigationIcon
-            navigationIcon?.setColorFilter(swatch.rgb, PorterDuff.Mode.SRC_ATOP)
+            navigationIcon?.setColorFilter(swatch.bodyTextColor, PorterDuff.Mode.SRC_ATOP)
 
 
         }
@@ -108,6 +108,8 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
     override fun hideLoader() {
         loading.visibility = View.GONE
         progressLoader.pauseAnimation(loading.loading_view)
+        characterInfo.visibility = View.VISIBLE
+        collapsing_toolbar_character_detail.visibility = View.VISIBLE
 
     }
 

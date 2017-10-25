@@ -32,43 +32,4 @@ class CharacterCacheDataStore @Inject constructor(timeProvider: TimeProvider,
         return Result.Failure()
     }
 
-//    override fun deleteByKey(key: String): Result<Unit, Exception> {
-//
-//        return Result.of {
-//            CharacterRealmDataEntity().queryFirst { query -> query.equalTo("id", key) }?.deleteFromRealm()
-//            Unit
-//        }
-//    }
-//
-//    override fun deleteAll(): Result<Unit, Exception> {
-//
-//        return Result.of {
-//            CharacterRealmDataEntity().deleteAll()
-//            lastItemsUpdated = 0
-//            Unit
-//        }
-//    }
-//
-//    override fun addOrUpdate(value: CharacterDataEntity): Result<CharacterDataEntity, Exception> {
-//        return Result.of {
-//            value.mapToRealmDataEntity().save()
-//            lastItemsUpdated = timeProvider.currentTimeMillis()
-//            value
-//        }
-//    }
-//
-//    override fun addOrUpdateAll(values: Collection<CharacterDataEntity>): Result<Collection<CharacterDataEntity>, Exception> {
-//        return Result.of {
-//            values.map { it.mapToRealmDataEntity() }.saveAll()
-//            lastItemsUpdated = timeProvider.currentTimeMillis()
-//            values
-//        }
-//    }
-//
-//    override fun getByKey(key: String): Result<CharacterDataEntity, *> {
-//        return Result.of {
-//            CharacterRealmDataEntity().queryFirst { query -> query.equalTo("id", key) }?.mapToCharacterDataEntity()
-//        }
-//
-//    }
 }

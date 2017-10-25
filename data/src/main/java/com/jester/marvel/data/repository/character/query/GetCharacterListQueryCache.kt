@@ -11,19 +11,6 @@ import javax.inject.Inject
  */
 class GetCharacterListQueryCache @Inject constructor() : GetCharacterListQuery {
 
-//    override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<*>, *> {
-//
-//        val offset = parameters?.get(GetCharacterListQuery.Parameters.OFFSET) as Int
-//
-//        val queryResult = ArrayList<CharacterDataEntity>()
-//        val realmList = CharacterRealmDataEntity().queryAll().map { it.mapToCharacterDataEntity() }
-//
-//        return if(realmList.isNotEmpty() && realmList.size>= offset){
-//            Result.of { realmList }
-//        } else Result.Failure()
-//
-//    }
-
 
     override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<Any>, Exception> {
 
