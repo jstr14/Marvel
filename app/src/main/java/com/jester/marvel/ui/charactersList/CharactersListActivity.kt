@@ -123,4 +123,9 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
         navigator.navigateToCharacterDetailActivity(this,id)
     }
+
+    override fun getSelectedFavCharacterFromId(id: String): CharacterViewEntity? {
+
+         return (adapter.collection as List<CharacterViewEntity>).find { it.id == id }
+    }
 }

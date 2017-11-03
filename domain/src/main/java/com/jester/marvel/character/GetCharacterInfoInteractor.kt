@@ -33,13 +33,13 @@ class GetCharacterInfoInteractor @Inject constructor(postExecutionThread: PostEx
             value ->
             params.character.events = value
             params.character
-        }.flatMap {
+        }/*.flatMap {
             getCharacterStories(params.character.id)
         }.map {
             value ->
             params.character.stories = value
             params.character
-        }
+        }*/
 
         return result
 

@@ -4,6 +4,7 @@ import com.jester.marvel.Result
 import com.jester.marvel.data.repository.Repository
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.mapToCharacter
+import com.jester.marvel.data.repository.character.model.mapToCharacterDataEntity
 import com.jester.marvel.data.repository.character.query.GetCharacterListQuery
 import com.jester.marvel.model.character.Character
 import com.jester.marvel.repository.CharacterRepository
@@ -12,11 +13,18 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 10/10/2017.
  */
-class CharacterDataRepository @Inject constructor(characterApiDataSource: CharacterApiDataSource, characterCacheDataStore: CharacterCacheDataStore)
+class CharacterDataRepository @Inject constructor(characterApiDataSource: CharacterApiDataSource,
+                                                  characterCacheDataStore: CharacterCacheDataStore,
+                                                  characterRealmDataSource: CharacterRealmDataSource)
     : CharacterRepository, Repository<String, CharacterDataEntity>() {
+
+
+
     init {
+        readableDataSources.add(characterRealmDataSource)
         readableDataSources.add(characterApiDataSource)
         cacheDataSources.add(characterCacheDataStore)
+        writableDataSources.add(characterRealmDataSource)
     }
 
     override fun getCharacters(offset: Int): Result<List<Character>, Exception> {
@@ -33,4 +41,15 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
         return result.map { it.mapToCharacter() }
     }
 
+    override fun saveCharacter(character: Character): Result<Character, Exception> {
+
+        val result = addOrUpdate(character.mapToCharacterDataEntity())
+        return result.map { it.mapToCharacter() }
+    }
+
+    override fun removeCharacter(id: String): Result<Unit, Exception> {
+
+        val result = deleteByKey(id)
+        return result
+    }
 }

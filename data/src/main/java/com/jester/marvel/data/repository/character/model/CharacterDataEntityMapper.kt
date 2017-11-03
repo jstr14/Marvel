@@ -18,3 +18,13 @@ fun ImageDataEntity.mapToImage(): Image {
 
     return Image(this.path, this.extension)
 }
+
+fun Image.mapToImageDataEntity(): ImageDataEntity {
+
+    return ImageDataEntity(this.path, this.extension)
+}
+
+fun Character.mapToCharacterDataEntity(): CharacterDataEntity{
+
+    return CharacterDataEntity(this.id,this.name,this.description,this.image.mapToImageDataEntity())
+}

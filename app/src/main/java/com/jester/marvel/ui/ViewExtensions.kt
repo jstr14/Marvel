@@ -1,6 +1,7 @@
 package com.jester.marvel.ui
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Typeface
 import android.support.v7.widget.Toolbar
 import android.text.SpannableString
@@ -15,6 +16,8 @@ import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 import com.jester.marvel.R
 import com.jester.marvel.dependencyinjection.application.GlideApp
+
+
 
 
 /**
@@ -70,4 +73,17 @@ fun TextView.setPrefixTextBold(prefix: String, text: String, separator: String =
     this.append(separator)
     this.append(text)
 
+}
+
+fun Int.getContrastVersionForColor(): Int {
+    val hsv = FloatArray(3)
+    Color.RGBToHSV(Color.red(this), Color.green(this), Color.blue(this),
+            hsv)
+    if (hsv[2] < 0.5) {
+        hsv[2] = 0.7f
+    } else {
+        hsv[2] = 0.3f
+    }
+    hsv[1] = hsv[1] * 0.2f
+    return Color.HSVToColor(hsv)
 }

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -15,8 +16,11 @@ import com.jester.marvel.ui.HorizontalSpaceItemDecorator
 import com.jester.marvel.ui.ProgressLoader
 import com.jester.marvel.ui.base.BaseActivity
 import com.jester.marvel.ui.characterDetail.renderers.ComicRenderer
+import com.jester.marvel.ui.characterDetail.renderers.EventRenderer
+import com.jester.marvel.ui.characterDetail.renderers.StoryRenderer
 import com.jester.marvel.ui.model.CharacterViewEntity
 import com.jester.marvel.ui.model.ComicViewEntity
+import com.jester.marvel.ui.model.EventViewEntity
 import com.jester.marvel.ui.setPrefixTextBold
 import com.pedrogomez.renderers.RendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
@@ -39,10 +43,14 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
     @Inject lateinit var presenter: CharacterDetailPresenter
     @Inject lateinit var comicRenderer: ComicRenderer
+    @Inject lateinit var eventRenderer: EventRenderer
+    @Inject lateinit var storyRenderer: StoryRenderer
     @Inject lateinit var progressLoader: ProgressLoader
     private val HORIZONTAL_ITEM_SPACE = 16
 
-    lateinit var adapter: RendererAdapter<Any>
+    lateinit var comicAdapter: RendererAdapter<Any>
+    lateinit var eventsAdapter: RendererAdapter<Any>
+    lateinit var storyAdapter: RendererAdapter<Any>
 
 
     override fun onRequestLayout(): Int {
@@ -67,19 +75,47 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         characterName.setPrefixTextBold(getString(R.string.name_detail),characterViewEntity.name,getString(R.string.character_info_option_separator))
         description.setPrefixTextBold(getString(R.string.description_detail),characterViewEntity.description, getString(R.string.character_info_option_separator))
 
-        if(characterViewEntity.comics.isEmpty()){
-            hideComics()
-        } else {
-            comicTitle.text = getString(R.string.comics_title)
-            adapter.collection.addAll(characterViewEntity.comics)
-            adapter.notifyDataSetChanged()
-        }
 
-
+        showComics(characterViewEntity)
+        showEvents(characterViewEntity)
+        //showStories(characterViewEntity)
 
     }
 
-    fun loadImageAndChangeIconColor(url: String){
+    private fun showComics(characterViewEntity: CharacterViewEntity){
+
+        if(characterViewEntity.comics.isEmpty()){
+            hideList(comicGroup)
+        } else {
+            comicTitle.text = getString(R.string.comics_title)
+            comicAdapter.collection.addAll(characterViewEntity.comics)
+            comicAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun showEvents(characterViewEntity: CharacterViewEntity){
+
+        if(characterViewEntity.events.isEmpty()){
+            hideList(eventGroup)
+        } else {
+            eventTitle.text = getString(R.string.event_title)
+            eventsAdapter.collection.addAll(characterViewEntity.events)
+            eventsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun showStories(characterViewEntity: CharacterViewEntity){
+
+        if(characterViewEntity.stories.isEmpty()){
+            hideList(storyGroup)
+        } else {
+            storyTitle.text = getString(R.string.story_title)
+            storyAdapter.collection.addAll(characterViewEntity.stories)
+            storyAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun loadImageAndChangeIconColor(url: String){
 
         Glide.with(this)
                 .asBitmap()
@@ -92,14 +128,17 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
                 })
     }
 
-    fun getPaletteFromBitmap(bitmap: Bitmap){
+    private fun getPaletteFromBitmap(bitmap: Bitmap){
 
         val palette = Palette.from(bitmap).generate()
 
-        val swatch = palette.darkMutedSwatch
-        if (swatch != null) {
+        val vibrantSwatch = palette.vibrantSwatch
+        val mutedSwatch = palette.mutedSwatch
+
+        if (vibrantSwatch != null && mutedSwatch != null) {
+            collapsing_toolbar.setContentScrimColor(vibrantSwatch.rgb)
             val navigationIcon = toolbar.navigationIcon
-            navigationIcon?.setColorFilter(swatch.bodyTextColor, PorterDuff.Mode.SRC_ATOP)
+            navigationIcon?.setColorFilter(mutedSwatch.titleTextColor, PorterDuff.Mode.SRC_ATOP)
 
 
         }
@@ -113,8 +152,8 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
     }
 
-    private fun hideComics(){
-        comicGroup.visibility = View.GONE
+    private fun hideList(view: View){
+        view.visibility = View.GONE
     }
 
     private fun setToolbar() {
@@ -129,17 +168,39 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
         private fun setRecyclerView() {
 
-            val horizontalLayoutManagaer = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            comicsList.layoutManager = horizontalLayoutManagaer
+            setLayoutManagerAndAddSpaceDecorator(comicsList)
+            setLayoutManagerAndAddSpaceDecorator(eventsList)
+            //setLayoutManagerAndAddSpaceDecorator(storiesList)
 
-            adapter = RendererBuilder.create<Any>()
+            comicAdapter = RendererBuilder.create<Any>()
                     .bind(ComicViewEntity::class.java, comicRenderer)
                     .build()
                     .into(comicsList)
-            comicsList.addItemDecoration(HorizontalSpaceItemDecorator(HORIZONTAL_ITEM_SPACE,this,true))
+
+            eventsAdapter = RendererBuilder.create<Any>()
+                    .bind(EventViewEntity::class.java, eventRenderer)
+                    .build()
+                    .into(eventsList)
+
+//            storyAdapter = RendererBuilder.create<Any>()
+//                    .bind(StoryViewEntity::class.java, storyRenderer)
+//                    .build()
+//                    .into(storiesList)
 
 
         }
+
+    private fun newLinearLayoutManagerHorizontal(): LinearLayoutManager {
+
+        return LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun setLayoutManagerAndAddSpaceDecorator(recyclerView: RecyclerView){
+
+        recyclerView.layoutManager = newLinearLayoutManagerHorizontal()
+        recyclerView.addItemDecoration(HorizontalSpaceItemDecorator(HORIZONTAL_ITEM_SPACE,this,true))
+    }
+
 
 
 

@@ -14,13 +14,21 @@ interface CacheDataSource<Key, Value> : ReadableDataSource<Key, Value>, Writable
 
 interface WritableDataSource<Key, Value> {
 
-    fun deleteByKey(key: Key): Result<Unit, *>
+    fun deleteByKey(key: Key): Result<Unit, *>{
+        return Result.Failure()
+    }
 
-    fun deleteAll(): Result<Unit, *>
+    fun deleteAll(): Result<Unit, *>{
+        return Result.Failure()
+    }
 
-    fun addOrUpdate(value: Value): Result<Value, *>
+    fun addOrUpdate(value: Value): Result<Value, *>{
+        return Result.Failure()
+    }
 
-    fun addOrUpdateAll(values: Collection<Value>): Result<Collection<Value>, *>
+    fun addOrUpdateAll(values: Collection<Value>): Result<Collection<Value>, *>{
+        return Result.Failure()
+    }
 }
 
 interface ReadableDataSource<Key, out Value> {
