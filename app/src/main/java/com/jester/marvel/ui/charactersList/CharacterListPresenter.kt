@@ -1,8 +1,12 @@
 package com.jester.marvel.ui.charactersList
 
 import com.jester.marvel.character.GetCharacterListInteractor
+import com.jester.marvel.character.RemoveFabCharacterInteractor
+import com.jester.marvel.character.SaveFabCharacterRealmInteractor
 import com.jester.marvel.model.character.Character
 import com.jester.marvel.ui.exception.AndroidExceptionHandler
+import com.jester.marvel.ui.model.CharacterViewEntity
+import com.jester.marvel.ui.model.mapper.mapToCharacter
 import com.jester.marvel.ui.model.mapper.mapToCharacterViewEntity
 import javax.inject.Inject
 
@@ -11,6 +15,8 @@ import javax.inject.Inject
  */
 class CharacterListPresenter @Inject constructor(val view: CharacterListView,
                                                  val getCharacterListInteractor: GetCharacterListInteractor,
+                                                 val saveCharacterRealmInteractor: SaveFabCharacterRealmInteractor,
+                                                 val removeFabCharacterInteractor: RemoveFabCharacterInteractor,
                                                  val exceptionHandler: AndroidExceptionHandler) {
 
 
@@ -39,7 +45,45 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
         getCharactersListWithPagination(offset)
     }
 
-    fun onCharacterPress(id: String) {
+
+    fun onCharacterPressed(id: String) {
         view.onCharacterPress(id)
+    }
+
+    fun onFabButtonPressed(id: String, checked: Boolean) {
+
+        if(checked){
+            val fabCharacterToSave = view.getSelectedFavCharacterFromId(id)
+            fabCharacterToSave?.let {
+                saveCharacterFav(fabCharacterToSave)
+            }
+
+        } else{
+            removeFabCharacter(id)
+
+        }
+
+    }
+
+    private fun saveCharacterFav(fabCharacter: CharacterViewEntity){
+
+        saveCharacterRealmInteractor.execute(SaveFabCharacterRealmInteractor.Parameters(fabCharacter.mapToCharacter())){
+            result ->
+            result.failure { exception ->
+                exceptionHandler.notifyException(view, exception)
+            }
+        }
+
+    }
+
+    private fun removeFabCharacter(id: String){
+
+        removeFabCharacterInteractor.execute(RemoveFabCharacterInteractor.Parameters(id)){
+            result ->
+            result.failure { exception ->
+                exceptionHandler.notifyException(view, exception)
+            }
+        }
+
     }
 }

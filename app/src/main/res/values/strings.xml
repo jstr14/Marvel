@@ -4,4 +4,11 @@
     <string name="server_error">Server Error</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="unauthorized">Unauthorized</string>
+
+    <string name="name_detail">Name: </string>
+    <string name="description_detail">Description: </string>
+    <string name="comics_title">Apparition in comics</string>
+    <string name="character_info_option_separator">\n\n</string>
+    <string name="event_title">Apparition in events</string>
+    <string name="story_title">Apparition in stories</string>
 </resources>

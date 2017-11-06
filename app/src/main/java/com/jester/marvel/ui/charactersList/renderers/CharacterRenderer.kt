@@ -26,7 +26,12 @@ class CharacterRenderer @Inject constructor(val presenter: CharacterListPresente
 
         this.rootView.setOnClickListener{
 
-            presenter.onCharacterPress(character.id)
+            presenter.onCharacterPressed(character.id)
+        }
+
+        this.rootView.fabButton.setOnClickListener{
+
+            presenter.onFabButtonPressed(character.id, this.rootView.fabButton.isChecked)
         }
     }
 

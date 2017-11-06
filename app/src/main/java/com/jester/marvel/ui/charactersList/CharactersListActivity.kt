@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.jester.marvel.R
+import com.jester.marvel.ui.Navigator
 import com.jester.marvel.ui.ProgressLoader
 import com.jester.marvel.ui.base.BaseActivity
 import com.jester.marvel.ui.charactersList.renderers.CharacterRenderer
@@ -14,12 +15,18 @@ import com.pedrogomez.renderers.RendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import kotlinx.android.synthetic.main.activity_characters_list.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
-import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 
 class CharactersListActivity : BaseActivity(), CharacterListView {
 
+
+    @Inject lateinit var presenter: CharacterListPresenter
+    @Inject lateinit var progressLoader: ProgressLoader
+    @Inject lateinit var characterRenderer: CharacterRenderer
+    @Inject lateinit var footerRenderer: FooterRenderer
+    @Inject lateinit var navigator: Navigator
+    lateinit var adapter: RendererAdapter<Any>
 
     companion object {
         const val INITIAL_OFFSET = 0
@@ -30,13 +37,8 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         val COLUMN_NUMBER = 2
         var SPAN_FULL = COLUMN_NUMBER
         var SPAN_SIZE_BASE = 1
-    }
 
-    @Inject lateinit var presenter: CharacterListPresenter
-    @Inject lateinit var progressLoader: ProgressLoader
-    @Inject lateinit var characterRenderer: CharacterRenderer
-    @Inject lateinit var footerRenderer: FooterRenderer
-    lateinit var adapter: RendererAdapter<Any>
+    }
 
     override fun onRequestLayout(): Int {
         return R.layout.activity_characters_list
@@ -44,13 +46,11 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun onViewLoaded() {
 
-
         progressLoader.addImagesToProgressLoader(loading.loading_view, this)
         setRecyclerView()
         presenter.onStart()
 
     }
-
 
     override fun hideLoader() {
         loading.visibility = View.GONE
@@ -121,7 +121,11 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun onCharacterPress(id: String) {
 
-        //TODO : navigate to detail activity to show character info
-        longToast(id)
+        navigator.navigateToCharacterDetailActivity(this,id)
+    }
+
+    override fun getSelectedFavCharacterFromId(id: String): CharacterViewEntity? {
+
+         return (adapter.collection as List<CharacterViewEntity>).find { it.id == id }
     }
 }

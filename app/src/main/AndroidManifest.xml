@@ -13,19 +13,20 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
         <activity android:name=".ui.main.MainActivity"/>
-
-
-
-        <activity android:name=".ui.charactersList.CharactersListActivity">
+        <activity android:name=".ui.charactersList.CharactersListActivity"
+                android:theme="@style/AppThemeWithActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.characterDetail.CharacterDetailActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.charactersList.CharactersListActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/characterName"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="32dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintHorizontal_bias="0.0"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/description"
+                app:layout_constraintTop_toBottomOf="@+id/characterName"
+                app:layout_constraintStart_toStartOf="@+id/characterName"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="32dp"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/comicTitle"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                app:layout_constraintStart_toStartOf="@+id/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="32dp"
+                />
+
+        <android.support.v7.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/comicsList"
+                app:layout_constraintStart_toStartOf="@+id/comicTitle"
+                app:layout_constraintEnd_toEndOf="@+id/description"
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/comicTitle"
+                />
+
+        <android.support.constraint.Group
+                android:id="@+id/comicGroup"
+                app:constraint_referenced_ids="comicTitle,comicsList"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventTitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/comicsList"
+                />
+
+        <android.support.v7.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:id="@+id/eventsList"
+                app:layout_constraintStart_toStartOf="@+id/eventTitle"
+                app:layout_constraintEnd_toEndOf="@+id/eventTitle"
+                app:layout_constraintTop_toBottomOf="@+id/eventTitle"
+                />
+
+        <android.support.constraint.Group
+                android:id="@+id/eventGroup"
+                app:constraint_referenced_ids="eventTitle,eventsList"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/storyTitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/eventsList"
+                />
+
+        <android.support.v7.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:id="@+id/storiesList"
+                app:layout_constraintStart_toStartOf="@+id/storyTitle"
+                app:layout_constraintEnd_toEndOf="@+id/storyTitle"
+                app:layout_constraintTop_toBottomOf="@+id/storyTitle"
+                app:layout_constraintBottom_toTopOf="@id/barrier7"
+                />
+
+        <android.support.constraint.Group
+                android:id="@+id/storyGroup"
+                app:constraint_referenced_ids="storyTitle,storiesList"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+
+        <android.support.constraint.Barrier
+                android:id="@+id/barrier7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="storiesList"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 class ProgressLoader @Inject constructor() {
 
-     fun addImagesToProgressLoader(progressLoader: LoadingView, context: Context){
+    fun addImagesToProgressLoader(progressLoader: LoadingView, context: Context) {
 
         progressLoader.addAnimation(Color.parseColor("#FFD200"), R.drawable.marvel_1,
                 LoadingView.FROM_LEFT)
@@ -24,32 +24,32 @@ class ProgressLoader @Inject constructor() {
         progressLoader.addAnimation(Color.parseColor("#C7E7FB"), R.drawable.marvel_4,
                 LoadingView.FROM_BOTTOM)
 
-         progressLoader.repeat = 4
+        progressLoader.repeat = 4
         progressLoader.visibility = View.VISIBLE
 
-         val mHandler = Handler()
-         progressLoader.addListener(object : LoadingView.LoadingListener {
-             override fun onAnimationStart(currentItemPosition: Int) {
-             }
+        val mHandler = Handler()
+        progressLoader.addListener(object : LoadingView.LoadingListener {
+            override fun onAnimationStart(currentItemPosition: Int) {
+            }
 
-             override fun onAnimationRepeat(nextItemPosition: Int) {
-                 mHandler.postDelayed({ progressLoader.startAnimation() }, 50)
-             }
+            override fun onAnimationRepeat(nextItemPosition: Int) {
+                mHandler.postDelayed({ progressLoader.startAnimation() }, 50)
+            }
 
-             override fun onAnimationEnd(nextItemPosition: Int) {
-             }
-         })
+            override fun onAnimationEnd(nextItemPosition: Int) {
+            }
+        })
         progressLoader.startAnimation()
     }
 
 
-    private fun startInfiniteAnimation(progressLoader: LoadingView){
+    private fun startInfiniteAnimation(progressLoader: LoadingView) {
 
         val mHandler = Handler()
         mHandler.postDelayed({ progressLoader.startAnimation() }, 50)
     }
 
-    fun pauseAnimation(progressLoader: LoadingView){
+    fun pauseAnimation(progressLoader: LoadingView) {
 
         progressLoader.pauseAnimation()
         progressLoader.visibility = View.GONE
