@@ -12,4 +12,5 @@ interface CharacterRepository {
     fun getCharacterById(id: String): Result<Character, Exception>
     fun saveCharacter(character: Character): Result<Character, Exception>
     fun removeCharacter(id: String): Result<Unit,Exception>
+    fun getFavCharacters(): Result<List<Character>, Exception>
 }

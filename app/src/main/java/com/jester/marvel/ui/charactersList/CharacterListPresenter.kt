@@ -1,6 +1,7 @@
 package com.jester.marvel.ui.charactersList
 
 import com.jester.marvel.character.GetCharacterListInteractor
+import com.jester.marvel.character.GetFavCharactersInteractor
 import com.jester.marvel.character.RemoveFabCharacterInteractor
 import com.jester.marvel.character.SaveFabCharacterRealmInteractor
 import com.jester.marvel.model.character.Character
@@ -15,14 +16,29 @@ import javax.inject.Inject
  */
 class CharacterListPresenter @Inject constructor(val view: CharacterListView,
                                                  val getCharacterListInteractor: GetCharacterListInteractor,
+                                                 val getFavCharactersInteractor: GetFavCharactersInteractor,
                                                  val saveCharacterRealmInteractor: SaveFabCharacterRealmInteractor,
                                                  val removeFabCharacterInteractor: RemoveFabCharacterInteractor,
                                                  val exceptionHandler: AndroidExceptionHandler) {
 
+    var favList = listOf<String>()
 
     fun onStart() {
 
-        getCharactersListWithPagination(CharactersListActivity.INITIAL_OFFSET)
+        getFavCharacters()
+    }
+
+    private fun getFavCharacters() {
+
+        getFavCharactersInteractor.execute(Unit) { result ->
+            result.success { value ->
+                favList = value.map { it.id }
+                getCharactersListWithPagination(CharactersListActivityBase.INITIAL_OFFSET)
+            }
+            result.failure {
+
+            }
+        }
     }
 
 
@@ -31,13 +47,26 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
         getCharacterListInteractor.execute(GetCharacterListInteractor.Parameters(offset)) { result ->
             result.success { value ->
                 view.hideLoader()
-                view.showCharacters(value.map(Character::mapToCharacterViewEntity))
+                view.showCharacters(markAsFav(value))
 
             }
             result.failure { exception ->
                 exceptionHandler.notifyException(view, exception)
             }
         }
+    }
+
+    private fun markAsFav(characterList: List<Character>): List<CharacterViewEntity> {
+
+        val viewList = characterList.map(Character::mapToCharacterViewEntity)
+
+        for (characterViewEntity in viewList) {
+            if(favList.contains(characterViewEntity.id)) characterViewEntity.isFav = true
+        }
+
+        return viewList
+
+
     }
 
     fun showMoreCharacter(offset: Int) {
@@ -52,23 +81,22 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
     fun onFabButtonPressed(id: String, checked: Boolean) {
 
-        if(checked){
+        if (checked) {
             val fabCharacterToSave = view.getSelectedFavCharacterFromId(id)
             fabCharacterToSave?.let {
                 saveCharacterFav(fabCharacterToSave)
             }
 
-        } else{
+        } else {
             removeFabCharacter(id)
 
         }
 
     }
 
-    private fun saveCharacterFav(fabCharacter: CharacterViewEntity){
+    private fun saveCharacterFav(fabCharacter: CharacterViewEntity) {
 
-        saveCharacterRealmInteractor.execute(SaveFabCharacterRealmInteractor.Parameters(fabCharacter.mapToCharacter())){
-            result ->
+        saveCharacterRealmInteractor.execute(SaveFabCharacterRealmInteractor.Parameters(fabCharacter.mapToCharacter())) { result ->
             result.failure { exception ->
                 exceptionHandler.notifyException(view, exception)
             }
@@ -76,14 +104,14 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
     }
 
-    private fun removeFabCharacter(id: String){
+    private fun removeFabCharacter(id: String) {
 
-        removeFabCharacterInteractor.execute(RemoveFabCharacterInteractor.Parameters(id)){
-            result ->
+        removeFabCharacterInteractor.execute(RemoveFabCharacterInteractor.Parameters(id)) { result ->
             result.failure { exception ->
                 exceptionHandler.notifyException(view, exception)
             }
         }
 
     }
+
 }

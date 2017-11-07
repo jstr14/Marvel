@@ -5,27 +5,26 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.jester.marvel.R
-import com.jester.marvel.ui.Navigator
 import com.jester.marvel.ui.ProgressLoader
-import com.jester.marvel.ui.base.BaseActivity
+import com.jester.marvel.ui.base.baseDrawer.BaseDrawerActivity
 import com.jester.marvel.ui.charactersList.renderers.CharacterRenderer
 import com.jester.marvel.ui.charactersList.renderers.FooterRenderer
 import com.jester.marvel.ui.model.CharacterViewEntity
 import com.pedrogomez.renderers.RendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
-import kotlinx.android.synthetic.main.activity_characters_list.*
+import kotlinx.android.synthetic.main.character_list.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
 import javax.inject.Inject
 
 
-class CharactersListActivity : BaseActivity(), CharacterListView {
+class CharactersListActivityBase : BaseDrawerActivity(), CharacterListView {
 
 
     @Inject lateinit var presenter: CharacterListPresenter
     @Inject lateinit var progressLoader: ProgressLoader
     @Inject lateinit var characterRenderer: CharacterRenderer
     @Inject lateinit var footerRenderer: FooterRenderer
-    @Inject lateinit var navigator: Navigator
+    var listIdFromFavCharacters = arrayListOf<String>()
     lateinit var adapter: RendererAdapter<Any>
 
     companion object {
@@ -41,7 +40,7 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
     }
 
     override fun onRequestLayout(): Int {
-        return R.layout.activity_characters_list
+        return R.layout.character_list
     }
 
     override fun onViewLoaded() {
@@ -51,6 +50,7 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         presenter.onStart()
 
     }
+
 
     override fun hideLoader() {
         loading.visibility = View.GONE
@@ -90,9 +90,9 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 if (!progressVisible && hasMore) {
                     val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() >= layoutManager.itemCount - 2 && !retrievingCharacters) {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() >= layoutManager.itemCount - 4 && !retrievingCharacters) {
 
-                        showProgressBaronRecyclerView()
+                        showProgressBarOnRecyclerView()
                         retrievingCharacters = true
                         presenter.showMoreCharacter(adapter.collection.size)
 
@@ -102,11 +102,11 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
         })
     }
 
-    private fun showProgressBaronRecyclerView() {
+    private fun showProgressBarOnRecyclerView() {
 
         adapter.add(FOOTER)
         adapter.notifyDataSetChanged()
-        recyclerView.scrollToPosition(adapter.itemCount - 1)
+        //recyclerView.scrollToPosition(adapter.itemCount - 1)
         progressVisible = true
     }
 
@@ -121,11 +121,12 @@ class CharactersListActivity : BaseActivity(), CharacterListView {
 
     override fun onCharacterPress(id: String) {
 
-        navigator.navigateToCharacterDetailActivity(this,id)
+        navigator.navigateToCharacterDetailActivity(this, id)
     }
 
     override fun getSelectedFavCharacterFromId(id: String): CharacterViewEntity? {
 
-         return (adapter.collection as List<CharacterViewEntity>).find { it.id == id }
+        return (adapter.collection as List<CharacterViewEntity>).find { it.id == id }
     }
+
 }

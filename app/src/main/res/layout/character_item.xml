@@ -9,7 +9,7 @@
             android:id="@+id/characterImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/random_image"
+            android:src="@color/grey"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="spread"

@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/favOption"
+                android:icon="@drawable/ic_collections_bookmark_black_24dp"
+                android:title="Favorite Characters"/>
+    </group>
+
+
+</menu>
