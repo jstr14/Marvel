@@ -1,7 +1,7 @@
 package com.jester.marvel.data.repository.character
 
 import com.jester.marvel.Result
-import com.jester.marvel.data.dependencyinjection.qualifier.queries.DefaultQueries
+import com.jester.marvel.data.dependencyinjection.qualifier.queries.CharactersDiskQuery
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.realm.CharacterRealmDataEntity
 import com.jester.marvel.data.repository.character.model.realm.mapToCharacterDataEntity
@@ -18,7 +18,7 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 02/11/2017.
  */
-class CharacterRealmDataSource @Inject constructor(@DefaultQueries override val queries: MutableSet<Query>)
+class CharacterRealmDataSource @Inject constructor(@CharactersDiskQuery override val queries: MutableSet<Query>)
     : ReadableDataSource<String, CharacterDataEntity>, WritableDataSource<String, CharacterDataEntity> {
 
     override fun getByKey(key: String): Result<CharacterDataEntity, *> {

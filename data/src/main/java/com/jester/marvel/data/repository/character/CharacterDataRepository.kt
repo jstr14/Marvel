@@ -6,6 +6,7 @@ import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.mapToCharacter
 import com.jester.marvel.data.repository.character.model.mapToCharacterDataEntity
 import com.jester.marvel.data.repository.character.query.GetCharacterListQuery
+import com.jester.marvel.data.repository.character.query.GetFavCharactersQuery
 import com.jester.marvel.model.character.Character
 import com.jester.marvel.repository.CharacterRepository
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
     init {
         readableDataSources.add(characterRealmDataSource)
         readableDataSources.add(characterApiDataSource)
-        cacheDataSources.add(characterCacheDataStore)
+        //cacheDataSources.add(characterCacheDataStore)
         writableDataSources.add(characterRealmDataSource)
     }
 
@@ -51,5 +52,14 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
 
         val result = deleteByKey(id)
         return result
+    }
+
+    override fun getFavCharacters(): Result<List<Character>, Exception> {
+
+        val params = HashMap<String, Any>()
+        val result = queryAll(GetFavCharactersQuery::class.java,params)
+        return result.map { it.map { it.mapToCharacter() }
+
+        }
     }
 }

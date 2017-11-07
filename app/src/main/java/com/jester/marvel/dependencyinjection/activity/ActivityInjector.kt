@@ -3,7 +3,7 @@ package com.jester.marvel.dependencyinjection.activity
 import com.jester.marvel.ui.characterDetail.CharacterDetailActivity
 import com.jester.marvel.ui.characterDetail.CharacterDetailModule
 import com.jester.marvel.ui.charactersList.CharacterListModule
-import com.jester.marvel.ui.charactersList.CharactersListActivity
+import com.jester.marvel.ui.charactersList.CharactersListActivityBase
 import com.jester.marvel.ui.main.MainActivity
 import com.jester.marvel.ui.main.MainActivityModule
 import dagger.Module
@@ -20,7 +20,7 @@ abstract class ActivityInjector {
     abstract fun contributeMainActivityInjector(): MainActivity
 
     @ContributesAndroidInjector(modules = arrayOf(CharacterListModule::class))
-    abstract fun constributeCharacterListInjector(): CharactersListActivity
+    abstract fun constributeCharacterListInjector(): CharactersListActivityBase
 
     @ContributesAndroidInjector(modules = arrayOf(CharacterDetailModule::class))
     abstract fun contributeCharacterDetailInjector(): CharacterDetailActivity

@@ -16,20 +16,22 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 11/10/2017.
  */
-class CharacterRenderer @Inject constructor(val presenter: CharacterListPresenter): Renderer<CharacterViewEntity>() {
+class CharacterRenderer @Inject constructor(val presenter: CharacterListPresenter) : Renderer<CharacterViewEntity>() {
 
     override fun render(p0: MutableList<Any>?) {
+
 
         val character = content
         renderName(character.name)
         renderImage(character.image)
+        renderFav(character.isFav)
 
-        this.rootView.setOnClickListener{
+        this.rootView.setOnClickListener {
 
             presenter.onCharacterPressed(character.id)
         }
 
-        this.rootView.fabButton.setOnClickListener{
+        this.rootView.fabButton.setOnClickListener {
 
             presenter.onFabButtonPressed(character.id, this.rootView.fabButton.isChecked)
         }
@@ -44,13 +46,18 @@ class CharacterRenderer @Inject constructor(val presenter: CharacterListPresente
         this.rootView.name.text = name
     }
 
-    private fun renderImage(image: ImageViewEntity){
+    private fun renderImage(image: ImageViewEntity) {
 
-        val properPath = image.path+"/"+this.context.getString(R.string.square)+"."+image.extension
+        val properPath = image.path + "/" + this.context.getString(R.string.square) + "." + image.extension
         this.rootView.characterImage.load(properPath)
 
     }
 
+    private fun renderFav(isFav: Boolean) {
+
+        this.rootView.fabButton.isChecked = isFav
+
+    }
 
 
 }

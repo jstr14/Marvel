@@ -1,5 +1,6 @@
 package com.jester.marvel.ui.charactersList
 
+import com.jester.marvel.ui.base.baseDrawer.BaseDrawerView
 import dagger.Module
 import dagger.Provides
 
@@ -10,7 +11,12 @@ import dagger.Provides
 class CharacterListModule {
 
     @Provides
-    internal fun provideCharacterListView(charactersListActivity: CharactersListActivity): CharacterListView {
+    internal fun provideCharacterListView(charactersListActivity: CharactersListActivityBase): CharacterListView {
+        return charactersListActivity
+    }
+
+    @Provides
+    internal fun provideCharacterListView2(charactersListActivity: CharactersListActivityBase): BaseDrawerView {
         return charactersListActivity
     }
 }

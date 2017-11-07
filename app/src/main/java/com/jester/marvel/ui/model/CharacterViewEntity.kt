@@ -11,4 +11,5 @@ data class CharacterViewEntity(val id: String,
                                val image: ImageViewEntity,
                                var comics: List<ComicViewEntity> = arrayListOf(),
                                var events: List<EventViewEntity> = arrayListOf(),
-                               var stories: List<StoryViewEntity> = arrayListOf())
+                               var stories: List<StoryViewEntity> = arrayListOf(),
+                               var isFav: Boolean = false)

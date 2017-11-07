@@ -14,7 +14,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity"/>
-        <activity android:name=".ui.charactersList.CharactersListActivity"
+        <activity android:name=".ui.charactersList.CharactersListActivityBase"
                 android:theme="@style/AppThemeWithActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,7 +25,7 @@
         <activity android:name=".ui.characterDetail.CharacterDetailActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ui.charactersList.CharactersListActivity"/>
+                    android:value=".ui.charactersList.CharactersListActivityBase"/>
         </activity>
     </application>
 

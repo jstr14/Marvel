@@ -11,6 +11,7 @@ import com.jester.marvel.data.repository.character.CharacterRealmDataSource
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryApi
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryCache
+import com.jester.marvel.data.repository.character.query.GetFavCharactersQueryDisk
 import com.jester.marvel.data.repository.comic.ComicApiDataSource
 import com.jester.marvel.data.repository.comic.ComicDataRepository
 import com.jester.marvel.data.repository.comic.model.ComicDataEntity
@@ -119,6 +120,17 @@ class DataModule {
     @Singleton
     fun providesRealmWritableCharacterDataSource(characterRealmDataSource: CharacterRealmDataSource): WritableDataSource<String,CharacterDataEntity>{
         return characterRealmDataSource
+    }
+
+    @Provides
+    @Singleton
+    @ElementsIntoSet
+    @CharactersDiskQuery
+    fun providesGetCharactersListDiskQuery(getFavCharactersQueryDisk: GetFavCharactersQueryDisk): MutableSet<Query> {
+
+        val set = LinkedHashSet<Query>()
+        set.add(getFavCharactersQueryDisk)
+        return set
     }
 
     @Provides
