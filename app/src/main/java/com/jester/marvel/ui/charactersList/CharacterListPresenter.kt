@@ -33,10 +33,10 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
         getFavCharactersInteractor.execute(Unit) { result ->
             result.success { value ->
                 favList = value.map { it.id }
-                getCharactersListWithPagination(CharactersListActivityBase.INITIAL_OFFSET)
+                getCharactersListWithPagination(CharactersListActivity.INITIAL_OFFSET)
             }
-            result.failure {
-
+            result.failure {exception ->
+                exceptionHandler.notifyException(view, exception)
             }
         }
     }
@@ -51,6 +51,7 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
             }
             result.failure { exception ->
+                view.hideLoader()
                 exceptionHandler.notifyException(view, exception)
             }
         }
@@ -91,6 +92,8 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
             removeFabCharacter(id)
 
         }
+
+        view.updateIsFavButton(id,checked)
 
     }
 

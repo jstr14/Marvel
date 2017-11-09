@@ -77,8 +77,7 @@ abstract class BaseDrawerActivity : AppCompatActivity(), BaseDrawerView {
     }
 
     override fun navigateToFavCharacters() {
-        longSnackbar(findViewById(android.R.id.content),"Click")
-
+       navigator.navigateToFavCharacters(this)
     }
 
     override fun showException(exceptionMessage: String) {

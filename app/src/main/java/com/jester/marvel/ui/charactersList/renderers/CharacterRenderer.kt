@@ -27,7 +27,6 @@ class CharacterRenderer @Inject constructor(val presenter: CharacterListPresente
         renderFav(character.isFav)
 
         this.rootView.setOnClickListener {
-
             presenter.onCharacterPressed(character.id)
         }
 
@@ -55,6 +54,7 @@ class CharacterRenderer @Inject constructor(val presenter: CharacterListPresente
 
     private fun renderFav(isFav: Boolean) {
 
+        this.rootView.fabButton.visibility = View.VISIBLE
         this.rootView.fabButton.isChecked = isFav
 
     }

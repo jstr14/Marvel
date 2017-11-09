@@ -11,4 +11,5 @@ interface CharacterListView: BaseDrawerView {
     fun hideLoader()
     fun onCharacterPress(id: String)
     fun getSelectedFavCharacterFromId(id: String): CharacterViewEntity?
+    fun updateIsFavButton(id: String, checked: Boolean)
 }

@@ -39,7 +39,7 @@ class AuthenticationInterceptor @Inject constructor() : Interceptor {
         return chain.proceed(request)
     }
 
-    fun getMD5FromApiKey(stringToHash: String): String {
+    private fun getMD5FromApiKey(stringToHash: String): String {
         val digest: MessageDigest
         try {
             digest = MessageDigest.getInstance("MD5")

@@ -2,6 +2,7 @@ package com.jester.marvel.ui
 
 import android.content.Context
 import com.jester.marvel.ui.characterDetail.CharacterDetailActivity
+import com.jester.marvel.ui.favCharacterList.FavCharacterListActivity
 import javax.inject.Inject
 
 /**
@@ -13,6 +14,12 @@ class Navigator @Inject constructor() {
 
         val intent = CharacterDetailActivity.getIntent(context)
         intent.putExtra(CharacterDetailActivity.ID, characterId)
+        context.startActivity(intent)
+    }
+
+    fun navigateToFavCharacters(context: Context) {
+
+        val intent = FavCharacterListActivity.getIntent(context)
         context.startActivity(intent)
     }
 }

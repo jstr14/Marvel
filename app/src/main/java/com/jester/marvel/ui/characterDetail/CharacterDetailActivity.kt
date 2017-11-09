@@ -69,6 +69,9 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
     override fun showCharacterInfo(characterViewEntity: CharacterViewEntity) {
 
+        characterInfo.visibility = View.VISIBLE
+        collapsing_toolbar_character_detail.visibility = View.VISIBLE
+
         val properPath = characterViewEntity.image.path + "/" + this.getString(R.string.square) + "." + characterViewEntity.image.extension
         loadImageAndChangeIconColor(properPath)
 
@@ -147,8 +150,6 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
     override fun hideLoader() {
         loading.visibility = View.GONE
         progressLoader.pauseAnimation(loading.loading_view)
-        characterInfo.visibility = View.VISIBLE
-        collapsing_toolbar_character_detail.visibility = View.VISIBLE
 
     }
 

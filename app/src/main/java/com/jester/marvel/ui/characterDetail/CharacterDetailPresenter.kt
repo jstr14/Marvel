@@ -37,9 +37,8 @@ class CharacterDetailPresenter @Inject constructor(val view: CharacterDetailView
     private fun getCharacterInfo(character: Character) {
 
         getCharacterInfoInteractor.execute(GetCharacterInfoInteractor.Parameters(character)) { result ->
+            view.hideLoader()
             result.success { value ->
-
-                view.hideLoader()
                 view.showCharacterInfo(value.mapToCharacterViewEntity())
 
             }

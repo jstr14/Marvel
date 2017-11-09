@@ -11,4 +11,5 @@
     <string name="character_info_option_separator">\n\n</string>
     <string name="event_title">Apparition in events</string>
     <string name="story_title">Apparition in stories</string>
+    <string name="favEmptyListMessage">You have no favorite characters. \n Tap &#10084; and save it to check them later!</string>
 </resources>
