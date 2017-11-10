@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+                android:src="@drawable/marvel_comic_background"
+                android:scaleType="centerCrop"
+                android:alpha="0.3"
+                android:tileMode="repeat"
+                />
+    </item>
+</layer-list>

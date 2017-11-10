@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.progress_loader.view.*
 import javax.inject.Inject
 
 
-class CharactersListActivityBase : BaseDrawerActivity(), CharacterListView {
+class CharactersListActivity : BaseDrawerActivity(), CharacterListView {
 
 
     @Inject lateinit var presenter: CharacterListPresenter
@@ -129,4 +129,8 @@ class CharactersListActivityBase : BaseDrawerActivity(), CharacterListView {
         return (adapter.collection as List<CharacterViewEntity>).find { it.id == id }
     }
 
+    override fun updateIsFavButton(id: String, checked: Boolean) {
+
+        (adapter.collection as List<CharacterViewEntity>).find { it.id == id }?.isFav = checked
+    }
 }

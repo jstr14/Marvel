@@ -8,6 +8,7 @@ import javax.inject.Inject
 class BaseDrawerPresenter @Inject constructor(val drawerView: BaseDrawerView){
 
     fun onFavOptionPressed() {
+        drawerView.openOrCloseNavigationDrawer()
         drawerView.navigateToFavCharacters()
     }
 

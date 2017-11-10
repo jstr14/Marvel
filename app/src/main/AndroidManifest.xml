@@ -14,8 +14,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".ui.main.MainActivity"/>
-        <activity android:name=".ui.charactersList.CharactersListActivityBase"
-                android:theme="@style/AppThemeWithActionBar">
+        <activity
+                android:name=".ui.charactersList.CharactersListActivity"
+                android:theme="@style/AppThemeWithActionBar.Drawer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -25,7 +26,13 @@
         <activity android:name=".ui.characterDetail.CharacterDetailActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ui.charactersList.CharactersListActivityBase"/>
+                    android:value=".ui.charactersList.CharactersListActivity"/>
+        </activity>
+        <activity android:name=".ui.favCharacterList.FavCharacterListActivity"
+                android:theme="@style/AppTheme.FavCharacters">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.charactersList.CharactersListActivity"/>
         </activity>
     </application>
 
