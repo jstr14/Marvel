@@ -3,10 +3,10 @@ package com.jester.marvel.ui.characterDetail
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.PorterDuff
-import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -27,6 +27,7 @@ import com.pedrogomez.renderers.RendererBuilder
 import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.character_info.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
 class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
@@ -41,6 +42,7 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         }
     }
 
+    lateinit var bitmap: Bitmap
     @Inject lateinit var presenter: CharacterDetailPresenter
     @Inject lateinit var comicRenderer: ComicRenderer
     @Inject lateinit var eventRenderer: EventRenderer
@@ -83,6 +85,29 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         showEvents(characterViewEntity)
         //showStories(characterViewEntity)
 
+//        share.setOnClickListener {
+//
+//            val bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"title", null)
+//            val bitmapUri = Uri.parse(bitmapPath)
+//
+//            val intent = Intent(Intent.ACTION_SEND)
+//            intent.setType("image/png")
+//            intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
+//            startActivity(Intent.createChooser(intent, "Share"))
+//
+//        }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.share_action -> {
+
+                longToast("Share in social media")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun showComics(characterViewEntity: CharacterViewEntity){
@@ -126,26 +151,27 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
                         characterImage.setImageBitmap(resource)
-                        getPaletteFromBitmap(resource)
+                        bitmap = resource
+                        //getPaletteFromBitmap(resource)
                     }
                 })
     }
 
-    private fun getPaletteFromBitmap(bitmap: Bitmap){
-
-        val palette = Palette.from(bitmap).generate()
-
-        val vibrantSwatch = palette.vibrantSwatch
-        val mutedSwatch = palette.mutedSwatch
-
-        if (vibrantSwatch != null && mutedSwatch != null) {
-            collapsing_toolbar.setContentScrimColor(vibrantSwatch.rgb)
-            val navigationIcon = toolbar.navigationIcon
-            navigationIcon?.setColorFilter(mutedSwatch.titleTextColor, PorterDuff.Mode.SRC_ATOP)
-
-
-        }
-    }
+//    private fun getPaletteFromBitmap(bitmap: Bitmap){
+//
+//        val palette = Palette.from(bitmap).generate()
+//
+//        val vibrantSwatch = palette.vibrantSwatch
+//        val mutedSwatch = palette.mutedSwatch
+//
+//        if (vibrantSwatch != null && mutedSwatch != null) {
+//            collapsing_toolbar.setContentScrimColor(vibrantSwatch.rgb)
+//            val navigationIcon = toolbar.navigationIcon
+//            navigationIcon?.setColorFilter(mutedSwatch.titleTextColor, PorterDuff.Mode.SRC_ATOP)
+//
+//
+//        }
+//    }
 
     override fun hideLoader() {
         loading.visibility = View.GONE
@@ -165,6 +191,11 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
             setDisplayShowTitleEnabled(false)
 
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
+        return true
     }
 
         private fun setRecyclerView() {
