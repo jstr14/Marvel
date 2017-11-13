@@ -10,4 +10,6 @@ interface CharacterDetailView: BaseView {
 
     fun showCharacterInfo(value: CharacterViewEntity)
     fun hideLoader()
+    fun getFavCharacter(): CharacterViewEntity
+    fun requestPermissionToShareImage()
 }

@@ -1,8 +1,10 @@
 package com.jester.marvel.ui.characterDetail
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
@@ -12,47 +14,50 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.jester.marvel.R
-import com.jester.marvel.ui.HorizontalSpaceItemDecorator
-import com.jester.marvel.ui.ProgressLoader
+import com.jester.marvel.ui.*
 import com.jester.marvel.ui.base.BaseActivity
+import com.jester.marvel.ui.behaviours.OptionsMenuBehaviourInCollapsingToolbar
 import com.jester.marvel.ui.characterDetail.renderers.ComicRenderer
 import com.jester.marvel.ui.characterDetail.renderers.EventRenderer
-import com.jester.marvel.ui.characterDetail.renderers.StoryRenderer
 import com.jester.marvel.ui.model.CharacterViewEntity
 import com.jester.marvel.ui.model.ComicViewEntity
 import com.jester.marvel.ui.model.EventViewEntity
-import com.jester.marvel.ui.setPrefixTextBold
 import com.pedrogomez.renderers.RendererAdapter
 import com.pedrogomez.renderers.RendererBuilder
 import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.character_info.*
 import kotlinx.android.synthetic.main.progress_loader.view.*
-import org.jetbrains.anko.longToast
 import javax.inject.Inject
 
-class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
+class CharacterDetailActivity : BaseActivity(), CharacterDetailView, OptionsMenuBehaviourInCollapsingToolbar {
 
     companion object {
 
         const val ID = "ID"
+        const val HORIZONTAL_ITEM_SPACE = 16
+
         @JvmStatic
         fun getIntent(context: Context): Intent {
             return Intent(context, CharacterDetailActivity::class.java)
         }
     }
 
-    lateinit var bitmap: Bitmap
     @Inject lateinit var presenter: CharacterDetailPresenter
+    @Inject lateinit var navigator: Navigator
     @Inject lateinit var comicRenderer: ComicRenderer
     @Inject lateinit var eventRenderer: EventRenderer
-    @Inject lateinit var storyRenderer: StoryRenderer
     @Inject lateinit var progressLoader: ProgressLoader
-    private val HORIZONTAL_ITEM_SPACE = 16
+    @Inject lateinit var managePermissions: ManagePermissions
+
 
     lateinit var comicAdapter: RendererAdapter<Any>
     lateinit var eventsAdapter: RendererAdapter<Any>
-    lateinit var storyAdapter: RendererAdapter<Any>
+    private var isFav = false
+    lateinit var characterID: String
+    lateinit var characterViewEntity: CharacterViewEntity
+    lateinit var bitmap: Bitmap
+
 
 
     override fun onRequestLayout(): Int {
@@ -64,55 +69,83 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         progressLoader.addImagesToProgressLoader(loading.loading_view, this)
         setToolbar()
         setRecyclerView()
-        val characterID = intent.extras.getString(ID)
+        characterID = intent.extras.getString(ID)
 
         presenter.onStart(characterID)
+
+        fab.setOnClickListener{
+            isFav = isFav != true
+            presenter.onFabButtonPressed(characterID, isFav)
+            val item = toolbar.menu.findItem(R.id.fav_action)
+            changeFavIcon(item, isFav)
+        }
     }
 
     override fun showCharacterInfo(characterViewEntity: CharacterViewEntity) {
 
+        this.characterViewEntity = characterViewEntity
         characterInfo.visibility = View.VISIBLE
         collapsing_toolbar_character_detail.visibility = View.VISIBLE
+        fab.visibility = View.VISIBLE
+
 
         val properPath = characterViewEntity.image.path + "/" + this.getString(R.string.square) + "." + characterViewEntity.image.extension
         loadImageAndChangeIconColor(properPath)
 
-        characterName.setPrefixTextBold(getString(R.string.name_detail),characterViewEntity.name,getString(R.string.character_info_option_separator))
-        description.setPrefixTextBold(getString(R.string.description_detail),characterViewEntity.description, getString(R.string.character_info_option_separator))
-
+        characterName.setPrefixTextBold(getString(R.string.name_detail), characterViewEntity.name)
+        description.setPrefixTextBold(getString(R.string.description_detail), characterViewEntity.description)
 
         showComics(characterViewEntity)
         showEvents(characterViewEntity)
-        //showStories(characterViewEntity)
 
-//        share.setOnClickListener {
-//
-//            val bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"title", null)
-//            val bitmapUri = Uri.parse(bitmapPath)
-//
-//            val intent = Intent(Intent.ACTION_SEND)
-//            intent.setType("image/png")
-//            intent.putExtra(Intent.EXTRA_STREAM, bitmapUri)
-//            startActivity(Intent.createChooser(intent, "Share"))
-//
-//        }
+        changeFavIcon(toolbar.menu.findItem(R.id.fav_action), characterViewEntity.isFav)
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.share_action -> {
-
-                longToast("Share in social media")
+                presenter.onShareButtonPressed()
+                true
+            }
+            R.id.fav_action -> {
+                isFav = isFav != true
+                presenter.onFabButtonPressed(characterID, isFav)
+                changeFavIcon(item, isFav)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun showComics(characterViewEntity: CharacterViewEntity){
+    override fun requestPermissionToShareImage() {
+        val allPermissionListener = managePermissions.setAllPermissionListener(this, root) {
+            navigator.shareSuperHeroInfo(this,bitmap)
+        }
 
-        if(characterViewEntity.comics.isEmpty()){
+        managePermissions.setRequestPermissions(this, mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), allPermissionListener)
+
+    }
+
+    override fun getFavCharacter(): CharacterViewEntity {
+        return characterViewEntity
+    }
+
+    private fun changeFavIcon(item: MenuItem, isFav: Boolean) {
+
+        if (isFav){
+            item.icon = ContextCompat.getDrawable(this, R.drawable.favorite_white_icon)
+            fab.setImageResource(R.drawable.favorite_white_icon)
+        }
+        else{
+            item.icon = ContextCompat.getDrawable(this, R.drawable.favorite_border_white_icon)
+            fab.setImageResource(R.drawable.favorite_border_white_icon)
+        }
+    }
+
+    private fun showComics(characterViewEntity: CharacterViewEntity) {
+
+        if (characterViewEntity.comics.isEmpty()) {
             hideList(comicGroup)
         } else {
             comicTitle.text = getString(R.string.comics_title)
@@ -121,9 +154,9 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         }
     }
 
-    private fun showEvents(characterViewEntity: CharacterViewEntity){
+    private fun showEvents(characterViewEntity: CharacterViewEntity) {
 
-        if(characterViewEntity.events.isEmpty()){
+        if (characterViewEntity.events.isEmpty()) {
             hideList(eventGroup)
         } else {
             eventTitle.text = getString(R.string.event_title)
@@ -132,18 +165,7 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
         }
     }
 
-    private fun showStories(characterViewEntity: CharacterViewEntity){
-
-        if(characterViewEntity.stories.isEmpty()){
-            hideList(storyGroup)
-        } else {
-            storyTitle.text = getString(R.string.story_title)
-            storyAdapter.collection.addAll(characterViewEntity.stories)
-            storyAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun loadImageAndChangeIconColor(url: String){
+    private fun loadImageAndChangeIconColor(url: String) {
 
         Glide.with(this)
                 .asBitmap()
@@ -152,26 +174,10 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
                         characterImage.setImageBitmap(resource)
                         bitmap = resource
-                        //getPaletteFromBitmap(resource)
                     }
                 })
     }
 
-//    private fun getPaletteFromBitmap(bitmap: Bitmap){
-//
-//        val palette = Palette.from(bitmap).generate()
-//
-//        val vibrantSwatch = palette.vibrantSwatch
-//        val mutedSwatch = palette.mutedSwatch
-//
-//        if (vibrantSwatch != null && mutedSwatch != null) {
-//            collapsing_toolbar.setContentScrimColor(vibrantSwatch.rgb)
-//            val navigationIcon = toolbar.navigationIcon
-//            navigationIcon?.setColorFilter(mutedSwatch.titleTextColor, PorterDuff.Mode.SRC_ATOP)
-//
-//
-//        }
-//    }
 
     override fun hideLoader() {
         loading.visibility = View.GONE
@@ -179,61 +185,61 @@ class CharacterDetailActivity : BaseActivity(), CharacterDetailView {
 
     }
 
-    private fun hideList(view: View){
+    private fun hideList(view: View) {
         view.visibility = View.GONE
     }
 
     private fun setToolbar() {
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
             setDisplayShowTitleEnabled(false)
 
         }
+        collapsing_toolbar_character_detail.addOnOffsetChangedListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu,menu)
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
         return true
     }
 
-        private fun setRecyclerView() {
+    private fun setRecyclerView() {
 
-            setLayoutManagerAndAddSpaceDecorator(comicsList)
-            setLayoutManagerAndAddSpaceDecorator(eventsList)
-            //setLayoutManagerAndAddSpaceDecorator(storiesList)
+        setLayoutManagerAndAddSpaceDecorator(comicsList)
+        setLayoutManagerAndAddSpaceDecorator(eventsList)
 
-            comicAdapter = RendererBuilder.create<Any>()
-                    .bind(ComicViewEntity::class.java, comicRenderer)
-                    .build()
-                    .into(comicsList)
+        comicAdapter = RendererBuilder.create<Any>()
+                .bind(ComicViewEntity::class.java, comicRenderer)
+                .build()
+                .into(comicsList)
 
-            eventsAdapter = RendererBuilder.create<Any>()
-                    .bind(EventViewEntity::class.java, eventRenderer)
-                    .build()
-                    .into(eventsList)
-
-//            storyAdapter = RendererBuilder.create<Any>()
-//                    .bind(StoryViewEntity::class.java, storyRenderer)
-//                    .build()
-//                    .into(storiesList)
+        eventsAdapter = RendererBuilder.create<Any>()
+                .bind(EventViewEntity::class.java, eventRenderer)
+                .build()
+                .into(eventsList)
 
 
-        }
+    }
 
     private fun newLinearLayoutManagerHorizontal(): LinearLayoutManager {
 
         return LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun setLayoutManagerAndAddSpaceDecorator(recyclerView: RecyclerView){
+    private fun setLayoutManagerAndAddSpaceDecorator(recyclerView: RecyclerView) {
 
         recyclerView.layoutManager = newLinearLayoutManagerHorizontal()
-        recyclerView.addItemDecoration(HorizontalSpaceItemDecorator(HORIZONTAL_ITEM_SPACE,this,true))
+        recyclerView.addItemDecoration(HorizontalSpaceItemDecorator(HORIZONTAL_ITEM_SPACE, this, true))
     }
 
 
+    override fun showOptionBehaviour() {
+        toolbar.menu.findItem(R.id.fav_action).isVisible = true
+    }
 
-
+    override fun hideOptionBehaviour() {
+        toolbar.menu.findItem(R.id.fav_action).isVisible = false
+    }
 }
