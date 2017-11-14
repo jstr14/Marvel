@@ -56,7 +56,7 @@ abstract class BaseDrawerActivity : AppCompatActivity(), BaseDrawerView {
         setSupportActionBar(toolbarDrawer.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+            setHomeAsUpIndicator(R.drawable.burger_icon)
         }
     }
 

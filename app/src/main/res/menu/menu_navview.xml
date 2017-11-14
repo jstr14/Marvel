@@ -3,7 +3,7 @@
         <item
                 android:id="@+id/favOption"
                 android:checkable="false"
-                android:icon="@drawable/ic_collections_bookmark_black_24dp"
+                android:icon="@drawable/bookmark_black_icon"
                 android:title="Favorite Characters"/>
     </group>
 
