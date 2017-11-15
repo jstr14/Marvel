@@ -13,8 +13,12 @@ import retrofit2.http.Query
 interface CharacterService {
 
     @GET(ApiConstants.GET_CHARACTERS_LIST)
-    fun getCharactersList(@Query("orderBy") orderBy: String,
-                          @Query("offset") offset: Int): Call<JsonElement>
+    fun getCharactersList(@Query("offset") offset: Int,
+                          @Query("orderBy") orderBy: String = ""): Call<JsonElement>
+
+    @GET(ApiConstants.GET_CHARACTERS_LIST)
+    fun getCharactersQueryName(@Query("offset") offset: Int,
+                               @Query("nameStartsWith") queryName: String): Call<JsonElement>
 
     @GET(ApiConstants.GET_CHARACTER_INFO)
     fun getCharacterInfo(@Path("id")id: String): Call<JsonElement>
