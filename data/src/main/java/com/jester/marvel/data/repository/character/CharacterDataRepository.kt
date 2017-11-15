@@ -5,6 +5,7 @@ import com.jester.marvel.data.repository.Repository
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.mapToCharacter
 import com.jester.marvel.data.repository.character.model.mapToCharacterDataEntity
+import com.jester.marvel.data.repository.character.query.CheckIfCharacterIsFavQuery
 import com.jester.marvel.data.repository.character.query.GetCharacterListQuery
 import com.jester.marvel.data.repository.character.query.GetFavCharactersQuery
 import com.jester.marvel.model.character.Character
@@ -61,5 +62,14 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
         return result.map { it.map { it.mapToCharacter() }
 
         }
+    }
+
+    override fun checkIfCharacterIsFav(id: String): Result<Character, Exception> {
+
+        val params = HashMap<String, Any>()
+        params.put(CheckIfCharacterIsFavQuery.ID, id)
+        val result = query(CheckIfCharacterIsFavQuery::class.java,params)
+
+        return result.map { it.mapToCharacter() }
     }
 }

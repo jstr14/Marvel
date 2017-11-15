@@ -10,7 +10,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.jester.marvel"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -81,6 +81,9 @@ dependencies {
     implementation 'com.github.florent37:glidepalette:2.1.1'
     implementation 'com.sackcentury:shinebutton:0.1.9'
     implementation 'com.azoft.carousellayoutmanager:carousel:1.2.1'
+
+    implementation "com.karumi:dexter:$dexter_version"
+
 
 
 

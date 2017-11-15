@@ -9,6 +9,7 @@ import com.jester.marvel.data.repository.character.CharacterCacheDataStore
 import com.jester.marvel.data.repository.character.CharacterDataRepository
 import com.jester.marvel.data.repository.character.CharacterRealmDataSource
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
+import com.jester.marvel.data.repository.character.query.CheckIfCharacterIsFavQueryDisk
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryApi
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryCache
 import com.jester.marvel.data.repository.character.query.GetFavCharactersQueryDisk
@@ -126,10 +127,12 @@ class DataModule {
     @Singleton
     @ElementsIntoSet
     @CharactersDiskQuery
-    fun providesGetCharactersListDiskQuery(getFavCharactersQueryDisk: GetFavCharactersQueryDisk): MutableSet<Query> {
+    fun providesGetCharactersListDiskQuery(getFavCharactersQueryDisk: GetFavCharactersQueryDisk,
+                                           checkIfCharacterIsFavQueryDisk: CheckIfCharacterIsFavQueryDisk): MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
         set.add(getFavCharactersQueryDisk)
+        set.add(checkIfCharacterIsFavQueryDisk)
         return set
     }
 
