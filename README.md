@@ -1,6 +1,15 @@
 # Marvel
 Application to show info about Marvel Characters and apply different concepts and libraries to try them. This App is **under development.**
 
+## Implemented functionalities
+
+  - Show Superhero List in a RecyclerList with infinite Scroll 
+  - Add Navigation Drawer with Favorite Characters option 
+  - Save info of favorite Characters to show them when the user has not internet connection 
+  - Add functionality to share images and text of selected character on other apps (Twitter, Email, Telegram...) 
+  - Show detail info of character at, select one 
+  - Search view to query characters by name
+
 
 ## Background
 
