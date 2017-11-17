@@ -81,9 +81,9 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
         val viewList = characterList.map(Character::mapToCharacterViewEntity)
 
-        for (characterViewEntity in viewList) {
-            if (favList.contains(characterViewEntity.id)) characterViewEntity.isFav = true
-        }
+        viewList
+                .filter { favList.contains(it.id) }
+                .forEach { it.isFav = true }
 
         return viewList
 
@@ -147,8 +147,6 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
 
         if (queryName.length >= 3) {
             search = true
-
-            //TODO query with param
             queryCharacterList(CharactersListActivity.INITIAL_OFFSET, queryName,true)
         }
     }
@@ -159,7 +157,6 @@ class CharacterListPresenter @Inject constructor(val view: CharacterListView,
             view.showProgressLoader()
             view.clearRecyclerList()
             onStart()
-
         }
         search = false
 

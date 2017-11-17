@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AbsListView
 import com.jester.marvel.R
 import com.jester.marvel.ui.ProgressLoader
 import com.jester.marvel.ui.base.baseDrawer.BaseDrawerActivity
@@ -30,6 +31,7 @@ class CharactersListActivity : BaseDrawerActivity(), CharacterListView, SearchVi
     @Inject lateinit var characterRenderer: CharacterRenderer
     @Inject lateinit var footerRenderer: FooterRenderer
     lateinit var searchView: SearchView
+    var userScrolled = false
     var listIdFromFavCharacters = arrayListOf<String>()
     lateinit var adapter: RendererAdapter<Any>
 
@@ -37,7 +39,6 @@ class CharactersListActivity : BaseDrawerActivity(), CharacterListView, SearchVi
         const val INITIAL_OFFSET = 0
         var progressVisible = false
         var retrievingCharacters = false
-        var hasMore = true
         val FOOTER = "Footer"
         val COLUMN_NUMBER = 2
         var SPAN_FULL = COLUMN_NUMBER
@@ -138,12 +139,17 @@ class CharactersListActivity : BaseDrawerActivity(), CharacterListView, SearchVi
 
     private fun setScrollListener() {
 
+
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                userScrolled = newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL
+            }
+
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                if (!progressVisible && hasMore) {
+                if (!progressVisible && userScrolled) {
                     val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
                     if (layoutManager.findLastCompletelyVisibleItemPosition() >= layoutManager.itemCount - 4 && !retrievingCharacters) {
-
                         showProgressBarOnRecyclerView()
                         retrievingCharacters = true
                         presenter.showMoreCharacter(adapter.collection.size)
