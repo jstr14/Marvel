@@ -11,7 +11,7 @@ import com.jester.marvel.data.repository.character.CharacterRealmDataSource
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.query.CheckIfCharacterIsFavQueryDisk
 import com.jester.marvel.data.repository.character.query.GetCharacterListQueryApi
-import com.jester.marvel.data.repository.character.query.GetCharacterListQueryCache
+import com.jester.marvel.data.repository.character.query.GetCharacterListQueryByNameApi
 import com.jester.marvel.data.repository.character.query.GetFavCharactersQueryDisk
 import com.jester.marvel.data.repository.comic.ComicApiDataSource
 import com.jester.marvel.data.repository.comic.ComicDataRepository
@@ -140,23 +140,14 @@ class DataModule {
     @Singleton
     @ElementsIntoSet
     @CharactersApiQuery
-    fun providesGetCharactersListQuery(getCharacterListQueryApi: GetCharacterListQueryApi): MutableSet<Query> {
+    fun providesGetCharactersListQuery(getCharacterListQueryApi: GetCharacterListQueryApi, getCharactersListQueryByNameApi: GetCharacterListQueryByNameApi): MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
         set.add(getCharacterListQueryApi)
+        set.add(getCharactersListQueryByNameApi)
         return set
     }
 
-    @Provides
-    @Singleton
-    @ElementsIntoSet
-    @CharactersCacheQuery
-    fun providesGetCharactersListCacheQuery(getCharacterListQueryCache: GetCharacterListQueryCache): MutableSet<Query> {
-
-        val set = LinkedHashSet<Query>()
-        set.add(getCharacterListQueryCache)
-        return set
-    }
 
     @Provides
     @Singleton

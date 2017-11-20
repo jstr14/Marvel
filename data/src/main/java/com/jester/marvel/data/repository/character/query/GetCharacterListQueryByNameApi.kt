@@ -9,21 +9,21 @@ import com.jester.marvel.model.exceptions.NetworkException
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-
 /**
  * Created by Héctor on 10/10/2017.
  */
-class GetCharacterListQueryApi @Inject constructor(val retrofit: Retrofit,
-                                                   val connectionChecker: ConnectionChecker): GetCharacterListQuery{
+class GetCharacterListQueryByNameApi @Inject constructor(val retrofit: Retrofit,
+                                                         val connectionChecker: ConnectionChecker): GetCharacterListByNameQuery {
 
     override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<*>, *> {
 
         if (connectionChecker.thereIsConnectivity()) {
 
-            val offset = parameters?.get(GetCharacterListQuery.Parameters.OFFSET) as Int
+            val offset = parameters?.get(GetCharacterListByNameQuery.OFFSET) as Int
+            val queryName = parameters[GetCharacterListByNameQuery.NAME] as String
 
             val userProfileService = retrofit.create(CharacterService::class.java)
-            val charactersCall =userProfileService.getCharactersList(offset)
+            val charactersCall =userProfileService.getCharactersQueryName(offset, queryName)
 
             val response = charactersCall.execute()
 

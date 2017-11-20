@@ -5,6 +5,7 @@ import com.jester.marvel.data.repository.Repository
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.mapToCharacter
 import com.jester.marvel.data.repository.character.model.mapToCharacterDataEntity
+import com.jester.marvel.data.repository.character.query.GetCharacterListByNameQuery
 import com.jester.marvel.data.repository.character.query.CheckIfCharacterIsFavQuery
 import com.jester.marvel.data.repository.character.query.GetCharacterListQuery
 import com.jester.marvel.data.repository.character.query.GetFavCharactersQuery
@@ -34,6 +35,15 @@ class CharacterDataRepository @Inject constructor(characterApiDataSource: Charac
         val params = HashMap<String, Any>()
         params.put(GetCharacterListQuery.OFFSET, offset)
         val result = queryAll(GetCharacterListQuery::class.java, params)
+        return result.map { it.map { it.mapToCharacter() } }
+    }
+
+    override fun getCharactersByQueryName(offset: Int, queryName: String): Result<List<Character>, Exception> {
+
+        val parms = HashMap<String, Any>()
+        parms.put(GetCharacterListByNameQuery.OFFSET,offset)
+        parms.put(GetCharacterListByNameQuery.NAME,queryName)
+        val result = queryAll(GetCharacterListByNameQuery::class.java,parms)
         return result.map { it.map { it.mapToCharacter() } }
     }
 
