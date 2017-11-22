@@ -16,6 +16,7 @@ import com.jester.marvel.data.repository.character.query.GetFavCharactersQueryDi
 import com.jester.marvel.data.repository.comic.ComicApiDataSource
 import com.jester.marvel.data.repository.comic.ComicDataRepository
 import com.jester.marvel.data.repository.comic.model.ComicDataEntity
+import com.jester.marvel.data.repository.comic.query.GetComicsListByCharacterIdQueryApi
 import com.jester.marvel.data.repository.comic.query.GetComicsListQueryApi
 import com.jester.marvel.data.repository.datasource.*
 import com.jester.marvel.data.repository.event.EventApiDataSource
@@ -165,9 +166,11 @@ class DataModule {
     @Singleton
     @ElementsIntoSet
     @ComicsApiQuery
-    fun providesGetComicsListQuery(getComicsListQueryApi: GetComicsListQueryApi) : MutableSet<Query> {
+    fun providesGetComicsListQuery(getComicsListByCharacterIdQueryApi: GetComicsListByCharacterIdQueryApi,
+                                   getComicsListQueryApi: GetComicsListQueryApi) : MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
+        set.add(getComicsListByCharacterIdQueryApi)
         set.add(getComicsListQueryApi)
         return set
     }

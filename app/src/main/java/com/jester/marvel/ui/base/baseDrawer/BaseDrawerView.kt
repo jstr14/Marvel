@@ -8,4 +8,5 @@ import com.jester.marvel.ui.base.BaseView
 interface BaseDrawerView : BaseView {
     fun navigateToFavCharacters()
     fun openOrCloseNavigationDrawer()
+    fun navigateToComicsList()
 }

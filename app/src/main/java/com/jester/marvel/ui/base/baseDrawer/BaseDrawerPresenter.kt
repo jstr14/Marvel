@@ -15,4 +15,9 @@ class BaseDrawerPresenter @Inject constructor(val drawerView: BaseDrawerView){
     fun onHomeButtonPressed() {
         drawerView.openOrCloseNavigationDrawer()
     }
+
+    fun onComicsListPressed() {
+        drawerView.openOrCloseNavigationDrawer()
+        drawerView.navigateToComicsList()
+    }
 }

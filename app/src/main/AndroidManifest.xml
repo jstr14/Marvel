@@ -29,8 +29,15 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.charactersList.CharactersListActivity"/>
         </activity>
-        <activity android:name=".ui.favCharacterList.FavCharacterListActivity"
-                android:theme="@style/AppTheme.FavCharacters">
+        <activity
+                android:name=".ui.favCharacterList.FavCharacterListActivity"
+                android:theme="@style/AppTheme.DrawerOptionsActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.charactersList.CharactersListActivity"/>
+        </activity>
+        <activity android:name=".ui.comicList.ComicListActivity"
+                  android:theme="@style/AppTheme.DrawerOptionsActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.charactersList.CharactersListActivity"/>

@@ -12,5 +12,6 @@ interface ApiConstants {
         const val GET_CHARACTER_EVENTS = "characters/{id}/events"
         const val GET_CHARACTER_STORIES = "characters/{id}/stories"
         const val GET_CHARACTER_COMICS = "characters/{id}/comics"
+        const val GET_COMICS = "comics"
     }
 }

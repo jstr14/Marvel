@@ -10,4 +10,6 @@ interface ComicRepository {
 
     fun getCharacterComics(id:String): Result<List<Comic>, Exception>
 
+    fun getCharactersList(offset: Int, queryName: String): Result<List<Comic>, Exception>
+
 }

@@ -10,20 +10,18 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 
 /**
- * Created by Héctor on 22/11/2017.
+ * Created by Héctor on 16/10/2017.
  */
-class GetComicsListQueryApi @Inject constructor(val retrofit: Retrofit,
-                                                val connectionChecker: ConnectionChecker): GetComicsListQuery {
+class GetComicsListByCharacterIdQueryApi @Inject constructor(val retrofit: Retrofit,
+                                                             val connectionChecker: ConnectionChecker): GetComicsListByCharacterIdQuery {
 
     override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<*>, *> {
 
         if (connectionChecker.thereIsConnectivity()) {
 
-            val offset = parameters?.get(GetComicsListQuery.Parameters.OFFSET) as Int
-            val queryName = parameters[GetComicsListQuery.Parameters.QUERYNAME] as String
+            val id = parameters?.get(GetComicsListByCharacterIdQuery.Parameters.ID) as String
             val comicService = retrofit.create(ComicService::class.java)
-
-            val response = comicService.getComicsList(offset).execute()
+            val response = comicService.getComicsFromCharacterInfo(id).execute()
 
             if(response.isSuccessful){
 

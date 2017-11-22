@@ -85,8 +85,6 @@ dependencies {
     implementation "com.karumi:dexter:$dexter_version"
 
 
-
-
 }
 
 repositories {

@@ -5,6 +5,11 @@
                 android:checkable="false"
                 android:icon="@drawable/bookmark_black_icon"
                 android:title="Favorite Characters"/>
+
+        <item android:id="@+id/comicsList"
+              android:checkable="false"
+              android:icon="@drawable/ic_comic"
+              android:title="Comics List"/>
     </group>
 
 

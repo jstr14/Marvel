@@ -4,6 +4,8 @@ import com.jester.marvel.ui.characterDetail.CharacterDetailActivity
 import com.jester.marvel.ui.characterDetail.CharacterDetailModule
 import com.jester.marvel.ui.charactersList.CharacterListModule
 import com.jester.marvel.ui.charactersList.CharactersListActivity
+import com.jester.marvel.ui.comicList.ComicListActivity
+import com.jester.marvel.ui.comicList.ComicListModule
 import com.jester.marvel.ui.favCharacterList.FavCharacterListActivity
 import com.jester.marvel.ui.favCharacterList.FavCharacterListModule
 import com.jester.marvel.ui.main.MainActivity
@@ -29,5 +31,8 @@ abstract class ActivityInjector {
 
     @ContributesAndroidInjector(modules = arrayOf(FavCharacterListModule::class))
     abstract fun contributeFavCharacterListInjector(): FavCharacterListActivity
+
+    @ContributesAndroidInjector(modules = arrayOf(ComicListModule::class))
+    abstract fun contributeComicListInjector(): ComicListActivity
 
 }

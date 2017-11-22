@@ -46,6 +46,10 @@ abstract class BaseDrawerActivity : AppCompatActivity(), BaseDrawerView {
                 R.id.favOption -> {
                     drawerPresenter.onFavOptionPressed()
                 }
+
+                R.id.comicsList -> {
+                    drawerPresenter.onComicsListPressed()
+                }
             }
             true
         })
@@ -74,6 +78,10 @@ abstract class BaseDrawerActivity : AppCompatActivity(), BaseDrawerView {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawers()
         } else drawer_layout.openDrawer(GravityCompat.START)
+    }
+
+    override fun navigateToComicsList() {
+        navigator.navigateToComicsList(this)
     }
 
     override fun navigateToFavCharacters() {
