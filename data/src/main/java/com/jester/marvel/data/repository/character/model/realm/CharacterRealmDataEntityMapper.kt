@@ -2,7 +2,9 @@ package com.jester.marvel.data.repository.character.model.realm
 
 import com.jester.marvel.data.repository.character.model.CharacterDataEntity
 import com.jester.marvel.data.repository.character.model.ImageDataEntity
+import com.jester.marvel.data.repository.comic.model.SerieDataEntity
 import com.jester.marvel.data.repository.comic.model.realm.ComicRealmDataEntity
+import com.jester.marvel.data.repository.comic.model.realm.SerieRealmDataEntity
 import com.jester.marvel.data.repository.comic.model.realm.mapToComicDataEntity
 import com.jester.marvel.data.repository.comic.model.realm.mapToRealmDataEntity
 import com.jester.marvel.data.repository.event.model.realm.EventRealmDataEntity
@@ -27,6 +29,10 @@ fun CharacterRealmDataEntity.mapToCharacterDataEntity(): CharacterDataEntity {
             this.stories?.map { it.mapToStroyDataEntity() })
 }
 
+fun SerieRealmDataEntity.mapToSerieDataEntity(): SerieDataEntity {
+
+    return SerieDataEntity(this.name)
+}
 
 fun ImageRealmDataEntity.mapToImageDataEntity(): ImageDataEntity {
 

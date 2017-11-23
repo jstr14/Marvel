@@ -2,6 +2,7 @@ package com.jester.marvel.ui.comicList
 
 import android.content.Context
 import android.content.Intent
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
@@ -9,12 +10,15 @@ import android.view.inputmethod.InputMethodManager
 import com.jester.marvel.R
 import com.jester.marvel.ui.base.BaseActivity
 import com.jester.marvel.ui.model.ComicViewEntity
+import kotlinx.android.synthetic.main.activity_comic_list.*
 import kotlinx.android.synthetic.main.character_list.*
 import javax.inject.Inject
 
 class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextListener {
 
     companion object {
+
+        const val ITEM_SPACE = 16
         @JvmStatic
         fun getIntent(context: Context): Intent {
             return Intent(context, ComicListActivity::class.java)
@@ -23,6 +27,7 @@ class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextL
 
     lateinit var searchView: SearchView
     @Inject lateinit var presenter: ComicListPresenter
+    @Inject lateinit var adapter: ComicListAdapter
 
 
     override fun onRequestLayout(): Int {
@@ -32,8 +37,12 @@ class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextL
     override fun onViewLoaded() {
 
         setSupportBar()
+        val layoutManager = LinearLayoutManager(this)
+        comicList.layoutManager = layoutManager
+        comicList.adapter = adapter
 
         presenter.onStart()
+
     }
 
     private fun setSupportBar(){
@@ -74,8 +83,8 @@ class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextL
         return true
     }
 
-    override fun showComics(map: List<ComicViewEntity>) {
+    override fun showComics(comicList: List<ComicViewEntity>) {
 
-        //TODO Show comics info
+        adapter.comicList = comicList
     }
 }
