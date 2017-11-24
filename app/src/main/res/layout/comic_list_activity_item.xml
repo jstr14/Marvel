@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              xmlns:tools="http://schemas.android.com/tools"
-                                             android:background="@android:color/black"
+                                             android:background=" #474A46"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content">
 
@@ -16,7 +16,7 @@
             app:layout_constraintVertical_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginStart="16dp"/>
+            />
 
     <TextView
             android:layout_width="0dp"
@@ -31,17 +31,19 @@
             android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
+            android:textSize="20sp"
             app:layout_constraintHorizontal_bias="0.0"/>
 
     <TextView
-            android:text="Serie: Ultimate X-Men (Spanish Language Edition) (2000-2009)"
-            android:textColor="@android:color/white"
+            android:text="Serie:"
+            android:textColor="@color/colorPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/serie"
+            android:id="@+id/serieTitle"
             android:layout_marginTop="16dp"
             android:maxLines="2"
             android:ellipsize="end"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@+id/comicName"
             app:layout_constraintStart_toStartOf="@+id/comicName"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,18 +51,36 @@
 
     <Button
             android:text="Wiki"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:id="@+id/wiki"
-            android:textAllCaps="false"
-            android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
             android:background="@drawable/button_round"
-            app:layout_constraintTop_toBottomOf="@+id/serie"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/comicImage"
+            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/serie"
-            />
+            android:layout_marginEnd="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/serieName"
+            app:layout_constraintHorizontal_bias="1.0"/>
+
+    <TextView
+            android:text="Ultimate X-Men (Spanish Language Edition) (2000-2009)"
+            android:textColor="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/serieName"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintStart_toStartOf="@+id/serieTitle"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/serieTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
 
 </android.support.constraint.ConstraintLayout>

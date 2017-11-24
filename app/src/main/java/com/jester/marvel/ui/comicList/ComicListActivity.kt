@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.jester.marvel.R
+import com.jester.marvel.ui.VerticalSpaceItemDecorator
 import com.jester.marvel.ui.base.BaseActivity
 import com.jester.marvel.ui.model.ComicViewEntity
 import kotlinx.android.synthetic.main.activity_comic_list.*
@@ -18,7 +19,8 @@ class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextL
 
     companion object {
 
-        const val ITEM_SPACE = 16
+        const val ITEM_SPACE = 4
+        const val FIRST_ITEM_SPACE = 16
         @JvmStatic
         fun getIntent(context: Context): Intent {
             return Intent(context, ComicListActivity::class.java)
@@ -40,6 +42,7 @@ class ComicListActivity : BaseActivity(), ComicListView, SearchView.OnQueryTextL
         val layoutManager = LinearLayoutManager(this)
         comicList.layoutManager = layoutManager
         comicList.adapter = adapter
+        comicList.addItemDecoration(VerticalSpaceItemDecorator(ITEM_SPACE, this,true, FIRST_ITEM_SPACE))
 
         presenter.onStart()
 

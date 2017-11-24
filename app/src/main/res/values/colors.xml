@@ -11,4 +11,13 @@
     <color name="marvel_blue">#518cca</color>
     <color name="marvel_orange">#f78f3f</color>
 
+    <!-- comic format color -->
+    <color name="comic_color"></color>
+    <color name="magazine_color"></color>
+    <color name="trade_paperback_color"></color>
+    <color name="hardcover_color"></color>
+    <color name="digest_color"></color>
+    <color name="graphic_novel_color"></color>
+    <color name="digital_comic"></color>
+    <color name="infinite_comic"></color>
 </resources>

@@ -1,5 +1,6 @@
 package com.jester.marvel.ui.comicList
 
+import android.support.annotation.NonNull
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,19 +9,19 @@ import android.view.ViewGroup
 import com.jester.marvel.R
 import com.jester.marvel.ui.load
 import com.jester.marvel.ui.model.ComicViewEntity
-import kotlinx.android.synthetic.main.comic_list_activity_item.view.*
+import kotlinx.android.synthetic.main.awesome_item_comic.view.*
+import org.jetbrains.anko.longToast
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
 /**
  * Created by Héctor on 23/11/2017.
  */
-class ComicListAdapter  @Inject constructor(val comicListPresenter: ComicListPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ComicListAdapter @Inject constructor(val comicListPresenter: ComicListPresenter) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var comicList: List<ComicViewEntity> by Delegates.observable(emptyList()) {
-        _, old, new->
-        autoNotify(old, new) {
-            old, new -> old.id == new.id
+    var comicList: List<ComicViewEntity> by Delegates.observable(emptyList()) { _, old, new ->
+        autoNotify(old, new) { old, new ->
+            old.id == new.id
         }
     }
 
@@ -58,7 +59,7 @@ class ComicListAdapter  @Inject constructor(val comicListPresenter: ComicListPre
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.comic_list_activity_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.awesome_item_comic, parent, false)
         return ComicViewHolder(view)
     }
 }
@@ -69,13 +70,25 @@ class ComicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val context = itemView.context
 
-        val properPath = comicViewEntity.image?.path+"/"+context.getString(R.string.portrait)+"."+comicViewEntity.image?.extension
-        itemView.comicImage.load(properPath)
-        itemView.comicName.text = comicViewEntity.title
-        itemView.setOnClickListener{
+        val properPath = comicViewEntity.image?.path + "/" + context.getString(R.string.portrait) + "." + comicViewEntity.image?.extension
+        disableParentsClip(itemView.imageView)
+        itemView.imageView.load(properPath)
 
+//        itemView.comicName.text = comicViewEntity.title
+        itemView.imageView.setOnClickListener {
+            context.longToast("imagen!")
         }
 
+    }
+
+    fun disableParentsClip(@NonNull view: View) {
+        var view = view
+        while (view.parent != null && view.parent is ViewGroup) {
+            val viewGroup = view.parent as ViewGroup
+            viewGroup.clipChildren = false
+            viewGroup.clipToPadding = false
+            view = viewGroup
+        }
     }
 
 }

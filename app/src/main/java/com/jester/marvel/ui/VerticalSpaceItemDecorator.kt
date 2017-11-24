@@ -11,14 +11,19 @@ import android.view.View
  */
 class VerticalSpaceItemDecorator(val commonBottonSpace: Int,
                                  val context: Context,
+                                 val handleFirstItem: Boolean = false,
+                                 val firstItemSpace: Int = 0,
                                  val handleLastItem: Boolean = false,
-                                 val lastItemSpaceRight: Int = 0): RecyclerView.ItemDecoration() {
+                                 val lastItemSpace: Int = 0): RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
                                 state: RecyclerView.State) {
 
-        if (handleLastItem && parent.getChildAdapterPosition(view) == parent.adapter.itemCount - 1)
-            outRect.bottom = convertDpToPx(lastItemSpaceRight)
+        if (handleFirstItem && parent.getChildAdapterPosition(view) == 0){
+            outRect.top = convertDpToPx(firstItemSpace)
+        }
+
+        if (handleLastItem && parent.getChildAdapterPosition(view) == parent.adapter.itemCount - 1) outRect.bottom = convertDpToPx(lastItemSpace)
         else
             outRect.bottom = convertDpToPx(commonBottonSpace)
     }
