@@ -12,12 +12,19 @@
     <color name="marvel_orange">#f78f3f</color>
 
     <!-- comic format color -->
-    <color name="comic_color"></color>
-    <color name="magazine_color"></color>
-    <color name="trade_paperback_color"></color>
-    <color name="hardcover_color"></color>
-    <color name="digest_color"></color>
-    <color name="graphic_novel_color"></color>
-    <color name="digital_comic"></color>
-    <color name="infinite_comic"></color>
+    <color name="comic_color">#FFEB3B</color> <!--TODO Change color-->
+    <color name="magazine_color">#FF9800</color>
+    <color name="trade_paperback_color"> #00BCD4</color>
+    <color name="hardcover_color">#8BC34A</color>
+    <color name="digest_color">#ffeead</color> <!--TODO Change color-->
+    <color name="graphic_novel_color">#a47c48</color>
+    <color name="digital_comic"> #BA68C8</color>
+    <color name="infinite_comic"> #CDDC39</color>
+
+    <color name="magazine_text_color">#082213</color>
+    <color name="trade_paperback_text_color">#000036</color>
+    <color name="hardcover_text_color">#1d1905</color>
+    <color name="graphic_novel_text_color">#2b0000</color>
+    <color name="digital_comic_text_color">#000000</color>
+    <color name="infinite_comic_text_color">#002627</color>
 </resources>

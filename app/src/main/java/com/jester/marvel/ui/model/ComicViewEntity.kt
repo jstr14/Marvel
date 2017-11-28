@@ -10,4 +10,10 @@ data class ComicViewEntity(val id: Int,
                            val digitalId: Int,
                            val title: String?,
                            val description: String?,
+                           val urls: List<UrlViewEntity>,
+                           val series: SerieViewEntity,
+                           val format: String,
                            val image: ImageViewEntity?)
+
+data class UrlViewEntity(val type:String, val url: String)
+data class SerieViewEntity(val name: String)

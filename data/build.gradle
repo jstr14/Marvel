@@ -23,8 +23,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         buildTypes.each{
-            it.buildConfigField "String","PRIVATE_KEY", "\""+getPrivateKey()+"\""
-            it.buildConfigField "String","PUBLIC_KEY", "\""+getPublicKey()+"\""
+            it.buildConfigField("String","PRIVATE_KEY_MARVEL", "\""+getPrivateKey()+"\"")
+            it.buildConfigField("String","PUBLIC_KEY_MARVEL", "\""+getPublicKey()+"\"")
+            it.buildConfigField("String","APP_ID_EBAY","\""+getAppIDEbay()+"\"")
 
         }
 
@@ -76,13 +77,19 @@ repositories {
 static def getPublicKey(){
     def Properties props = new Properties()
     props.load(new FileInputStream(new File('local.properties')))
-    return props['PUBLIC_KEY']
+    return props['PUBLIC_KEY_MARVEL']
 }
 
 static def getPrivateKey(){
     def Properties props = new Properties()
     props.load(new FileInputStream(new File('local.properties')))
-    return props['PRIVATE_KEY']
+    return props['PRIVATE_KEY_MARVEL']
+}
+
+static def getAppIDEbay(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('local.properties')))
+    return props['APP_ID_EBAY']
 }
 
 

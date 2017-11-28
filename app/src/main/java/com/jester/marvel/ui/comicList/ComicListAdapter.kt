@@ -1,12 +1,12 @@
 package com.jester.marvel.ui.comicList
 
-import android.support.annotation.NonNull
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jester.marvel.R
+import com.jester.marvel.ui.FormatComic
 import com.jester.marvel.ui.load
 import com.jester.marvel.ui.model.ComicViewEntity
 import kotlinx.android.synthetic.main.awesome_item_comic.view.*
@@ -71,24 +71,61 @@ class ComicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val context = itemView.context
 
         val properPath = comicViewEntity.image?.path + "/" + context.getString(R.string.portrait) + "." + comicViewEntity.image?.extension
-        disableParentsClip(itemView.imageView)
-        itemView.imageView.load(properPath)
+        itemView.comicCover.load(properPath)
 
-//        itemView.comicName.text = comicViewEntity.title
-        itemView.imageView.setOnClickListener {
+        itemView.name.text = comicViewEntity.title
+        setFormat(comicViewEntity.format)
+        itemView.comicCover.setOnClickListener {
             context.longToast("imagen!")
         }
 
     }
 
-    fun disableParentsClip(@NonNull view: View) {
-        var view = view
-        while (view.parent != null && view.parent is ViewGroup) {
-            val viewGroup = view.parent as ViewGroup
-            viewGroup.clipChildren = false
-            viewGroup.clipToPadding = false
-            view = viewGroup
+    private fun setFormat(format: String) {
+        itemView.format.text = format
+        when (format) {
+            FormatComic.COMIC.format -> {
+                itemView.format.setBackgroundResource(FormatComic.COMIC.getColor())
+                itemView.format.setTextColor(FormatComic.COMIC.getTextColor())
+            }
+            FormatComic.DIGEST.format -> {
+                itemView.format.setBackgroundResource(FormatComic.DIGEST.getColor())
+                itemView.format.setTextColor(FormatComic.DIGEST.getTextColor())
+
+            }
+            FormatComic.DIGITAL_COMIC.format -> {
+                itemView.format.setBackgroundResource(FormatComic.DIGITAL_COMIC.getColor())
+                itemView.format.setTextColor(FormatComic.DIGITAL_COMIC.getTextColor())
+
+            }
+            FormatComic.GRAPHIC_NOVEL.format -> {
+                itemView.format.setBackgroundResource(FormatComic.GRAPHIC_NOVEL.getColor())
+                itemView.format.setTextColor(FormatComic.GRAPHIC_NOVEL.getTextColor())
+
+            }
+            FormatComic.HARDCOVER.format -> {
+                itemView.format.setBackgroundResource(FormatComic.HARDCOVER.getColor())
+                itemView.format.setTextColor(FormatComic.HARDCOVER.getTextColor())
+
+            }
+            FormatComic.INFINITE_COMIC.format -> {
+                itemView.format.setBackgroundResource(FormatComic.INFINITE_COMIC.getColor())
+                itemView.format.setTextColor(FormatComic.INFINITE_COMIC.getTextColor())
+
+            }
+            FormatComic.MAGAZINE.format -> {
+                itemView.format.setBackgroundResource(FormatComic.MAGAZINE.getColor())
+                itemView.format.setTextColor(FormatComic.MAGAZINE.getTextColor())
+
+            }
+            FormatComic.TRADE_PAPERBACK.format -> {
+                itemView.format.setBackgroundResource(FormatComic.TRADE_PAPERBACK.getColor())
+                itemView.format.setTextColor(FormatComic.TRADE_PAPERBACK.getTextColor())
+
+            }
+            else -> itemView.format.visibility = View.GONE
         }
+
     }
 
 }

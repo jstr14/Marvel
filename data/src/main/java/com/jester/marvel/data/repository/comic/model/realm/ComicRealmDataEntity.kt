@@ -15,14 +15,25 @@ open class ComicRealmDataEntity(): RealmObject() {
     var description: String? = ""
     lateinit var urls: RealmList<UrlRealmDataEntity>
     lateinit var serie: SerieRealmDataEntity
+    var format: String = ""
     var image: ImageRealmDataEntity? = null
 
-    constructor(id: Int, digitalId: Int, title: String, description: String, image: ImageRealmDataEntity): this(){
+    constructor(id: Int,
+                digitalId: Int,
+                title: String,
+                description: String,
+                urls: RealmList<UrlRealmDataEntity>,
+                serie: SerieRealmDataEntity,
+                format: String,
+                image: ImageRealmDataEntity): this(){
 
         this.id = id
         this.digitalId = digitalId
         this.title = title
         this.description = description
+        this.urls = urls
+        this.serie = serie
+        this.format = format
         this.image = image
     }
 }

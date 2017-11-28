@@ -12,6 +12,7 @@ data class ComicDataEntity (val id: Int,
                             val description: String?,
                             val urls: List<UrlDataEntity>,
                             val series: SerieDataEntity,
+                            val format: String,
                             @SerializedName("thumbnail") val image: ImageDataEntity?)
 
 data class UrlDataEntity(val type:String, val url: String)

@@ -19,8 +19,8 @@ class AuthenticationInterceptor @Inject constructor() : Interceptor {
         val original = chain!!.request()
         val originalHttpUrl = original.url()
 
-        val privateKey = BuildConfig.PRIVATE_KEY
-        val publicKey = BuildConfig.PUBLIC_KEY
+        val privateKey = BuildConfig.PRIVATE_KEY_MARVEL
+        val publicKey = BuildConfig.PUBLIC_KEY_MARVEL
         val ts = System.currentTimeMillis().toString()
 
         val hash = getMD5FromApiKey(ts+privateKey+publicKey)
