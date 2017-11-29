@@ -13,5 +13,7 @@ interface ApiConstants {
         const val GET_CHARACTER_STORIES = "characters/{id}/stories"
         const val GET_CHARACTER_COMICS = "characters/{id}/comics"
         const val GET_COMICS = "comics"
+        const val EBAY_BASE_URL = "https://svcs.ebay.com/services/"
+        const val EBAY_SEARCH = "search/FindingService/v1"
     }
 }

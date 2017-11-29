@@ -2,6 +2,7 @@ package com.jester.marvel.data.dependencyinjection
 
 import com.jester.marvel.data.dependencyinjection.qualifier.DiskCacheTtl
 import com.jester.marvel.data.dependencyinjection.qualifier.queries.*
+import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.Ebay
 import com.jester.marvel.data.network.ApiConstants
 import com.jester.marvel.data.network.AuthenticationInterceptor
 import com.jester.marvel.data.repository.character.CharacterApiDataSource
@@ -84,14 +85,26 @@ class DataModule {
         return httpClient.build()
     }
 
+
     @Provides
     @Singleton
     fun providesRetrofit(client: OkHttpClient): Retrofit =
             Retrofit.Builder()
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(ApiConstants.BASEURL)
+                    .baseUrl(ApiConstants.EBAY_BASE_URL)
                     .build()
+
+    @Provides
+    @Singleton
+    @Ebay
+    fun providesEbayRetrofit(): Retrofit {
+        return Retrofit.Builder()
+                .client(OkHttpClient.Builder().build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(ApiConstants.BASEURL)
+                .build()
+    }
 
 
     @Provides
@@ -108,19 +121,19 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesCacheCharacterRedableDataSource(characterCacheDataStore: CharacterCacheDataStore): InMemoryCacheDataSource<String,CharacterDataEntity> {
+    fun providesCacheCharacterRedableDataSource(characterCacheDataStore: CharacterCacheDataStore): InMemoryCacheDataSource<String, CharacterDataEntity> {
         return characterCacheDataStore
     }
 
     @Provides
     @Singleton
-    fun providesRealmReadableCharacterDataSource(characterRealmDataSource: CharacterRealmDataSource): ReadableDataSource<String,CharacterDataEntity>{
+    fun providesRealmReadableCharacterDataSource(characterRealmDataSource: CharacterRealmDataSource): ReadableDataSource<String, CharacterDataEntity> {
         return characterRealmDataSource
     }
 
     @Provides
     @Singleton
-    fun providesRealmWritableCharacterDataSource(characterRealmDataSource: CharacterRealmDataSource): WritableDataSource<String,CharacterDataEntity>{
+    fun providesRealmWritableCharacterDataSource(characterRealmDataSource: CharacterRealmDataSource): WritableDataSource<String, CharacterDataEntity> {
         return characterRealmDataSource
     }
 
@@ -158,7 +171,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesApiComicReadableDataSource(comicApiDataSource: ComicApiDataSource): ReadableDataSource<String,ComicDataEntity> {
+    fun providesApiComicReadableDataSource(comicApiDataSource: ComicApiDataSource): ReadableDataSource<String, ComicDataEntity> {
         return comicApiDataSource
     }
 
@@ -167,7 +180,7 @@ class DataModule {
     @ElementsIntoSet
     @ComicsApiQuery
     fun providesGetComicsListQuery(getComicsListByCharacterIdQueryApi: GetComicsListByCharacterIdQueryApi,
-                                   getComicsListQueryApi: GetComicsListQueryApi) : MutableSet<Query> {
+                                   getComicsListQueryApi: GetComicsListQueryApi): MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
         set.add(getComicsListByCharacterIdQueryApi)
@@ -183,7 +196,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesApiEventReadableDataSource(eventApiDataSource: EventApiDataSource): ReadableDataSource<String,EventDataEntity> {
+    fun providesApiEventReadableDataSource(eventApiDataSource: EventApiDataSource): ReadableDataSource<String, EventDataEntity> {
         return eventApiDataSource
     }
 
@@ -191,7 +204,7 @@ class DataModule {
     @Singleton
     @ElementsIntoSet
     @EventApiQuery
-    fun providesGetEventsListQuery(getEventsListQueryApi: GetEventsListQueryApi) : MutableSet<Query> {
+    fun providesGetEventsListQuery(getEventsListQueryApi: GetEventsListQueryApi): MutableSet<Query> {
 
         val set = LinkedHashSet<Query>()
         set.add(getEventsListQueryApi)
@@ -200,8 +213,8 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesStoriesRepository(storyDataRepository: StoryDataRepository) : StoryRepository {
-        return  storyDataRepository
+    fun providesStoriesRepository(storyDataRepository: StoryDataRepository): StoryRepository {
+        return storyDataRepository
     }
 
     @Provides
@@ -214,7 +227,7 @@ class DataModule {
     @Singleton
     @ElementsIntoSet
     @StoryApiQuery
-    fun providesGetStoriesListQuery(getStoriesListQueryApi: GetStoriesListQueryApi): MutableSet<Query>{
+    fun providesGetStoriesListQuery(getStoriesListQueryApi: GetStoriesListQueryApi): MutableSet<Query> {
         val set = LinkedHashSet<Query>()
         set.add(getStoriesListQueryApi)
         return set
