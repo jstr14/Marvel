@@ -2,6 +2,7 @@ package com.jester.marvel.data.repository.character
 
 import com.jester.marvel.Result
 import com.jester.marvel.data.dependencyinjection.qualifier.queries.CharactersApiQuery
+import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.AuthenticationRetrofit
 import com.jester.marvel.data.network.ConnectionChecker
 import com.jester.marvel.data.network.parseResponse
 import com.jester.marvel.data.network.service.CharacterService
@@ -16,7 +17,7 @@ import javax.inject.Inject
  * Created by Héctor on 10/10/2017.
  */
 class CharacterApiDataSource @Inject constructor(@CharactersApiQuery override val queries: MutableSet<Query>,
-                                                 val retrofit: Retrofit,
+                                                 @AuthenticationRetrofit val retrofit: Retrofit,
                                                  val connectionChecker: ConnectionChecker)
     : ReadableDataSource<String, CharacterDataEntity> {
 

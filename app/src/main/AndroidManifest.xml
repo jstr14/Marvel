@@ -31,7 +31,7 @@
         </activity>
         <activity
                 android:name=".ui.favCharacterList.FavCharacterListActivity"
-                android:theme="@style/AppTheme.DrawerOptionsActivity">
+                android:theme="@style/AppTheme.DrawerOptionsActivity.MarvelBackground">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ui.charactersList.CharactersListActivity"/>

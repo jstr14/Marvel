@@ -1,6 +1,7 @@
 package com.jester.marvel.data.repository.comic.query
 
 import com.jester.marvel.Result
+import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.AuthenticationRetrofit
 import com.jester.marvel.data.network.ConnectionChecker
 import com.jester.marvel.data.network.parseResponse
 import com.jester.marvel.data.network.service.ComicService
@@ -12,7 +13,7 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 16/10/2017.
  */
-class GetComicsListByCharacterIdQueryApi @Inject constructor(val retrofit: Retrofit,
+class GetComicsListByCharacterIdQueryApi @Inject constructor(@AuthenticationRetrofit val retrofit: Retrofit,
                                                              val connectionChecker: ConnectionChecker): GetComicsListByCharacterIdQuery {
 
     override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<*>, *> {

@@ -2,6 +2,7 @@ package com.jester.marvel.data.dependencyinjection
 
 import com.jester.marvel.data.dependencyinjection.qualifier.DiskCacheTtl
 import com.jester.marvel.data.dependencyinjection.qualifier.queries.*
+import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.AuthenticationRetrofit
 import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.Ebay
 import com.jester.marvel.data.network.ApiConstants
 import com.jester.marvel.data.network.AuthenticationInterceptor
@@ -88,19 +89,20 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun providesRetrofit(client: OkHttpClient): Retrofit =
+    @Ebay
+    fun providesEbayRetrofit(): Retrofit =
             Retrofit.Builder()
-                    .client(client)
+                    .client(OkHttpClient.Builder().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(ApiConstants.EBAY_BASE_URL)
                     .build()
 
     @Provides
     @Singleton
-    @Ebay
-    fun providesEbayRetrofit(): Retrofit {
+    @AuthenticationRetrofit
+    fun providesRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .client(OkHttpClient.Builder().build())
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(ApiConstants.BASEURL)
                 .build()

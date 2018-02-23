@@ -1,6 +1,7 @@
 package com.jester.marvel.data.repository.event.query
 
 import com.jester.marvel.Result
+import com.jester.marvel.data.dependencyinjection.qualifier.retrofit.AuthenticationRetrofit
 import com.jester.marvel.data.network.ConnectionChecker
 import com.jester.marvel.data.network.parseResponse
 import com.jester.marvel.data.network.service.EventService
@@ -12,7 +13,7 @@ import javax.inject.Inject
 /**
  * Created by Héctor on 16/10/2017.
  */
-class GetEventsListQueryApi @Inject constructor(val retrofit: Retrofit,
+class GetEventsListQueryApi @Inject constructor(@AuthenticationRetrofit val retrofit: Retrofit,
                                                 val connectionChecker: ConnectionChecker): GetEventsListQuery {
 
     override fun queryAll(parameters: HashMap<String, *>?, queryable: Any?): Result<Collection<*>, *> {
